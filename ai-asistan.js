@@ -42,12 +42,12 @@
 
   var CSS = [
     '.dp-ai{--ai-blue:#1565c0;--ai-teal:#21a0b0;--ai-card:#fff;--ai-ink:#1c2b3a;--ai-soft:#5b6b7a;--ai-line:#dbe8ee;--ai-paper:#f3f8fb;',
-    '  --ai-chat:#eef4f8;--ai-bot:#fff;container-type:inline-size;font-family:"Nunito",sans-serif;color:var(--ai-ink);line-height:1.55;text-align:left}',
+    '  --ai-chat:#eef4f8;--ai-bot:#fff;container-type:inline-size;font-family:var(--font-body,"Nunito"),sans-serif;color:var(--ai-ink);line-height:1.55;text-align:left}',
     '.dp-ai *{box-sizing:border-box}',
     '.dp-ai-top{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:10px}',
     '.dp-ai-logo{width:64px;height:64px;flex-shrink:0;filter:drop-shadow(0 6px 12px rgba(21,101,192,.25))}',
     '.dp-ai-titles{flex:1 1 220px;min-width:0}',
-    '.dp-ai-title{margin:0;font-family:"Nunito",sans-serif;font-weight:900;font-size:1.7rem;line-height:1.15;letter-spacing:-.01em;',
+    '.dp-ai-title{margin:0;font-family:var(--font-head,"Nunito"),sans-serif;font-weight:900;font-size:1.7rem;line-height:1.15;letter-spacing:-.01em;',
     '  background:linear-gradient(100deg,var(--ai-blue),var(--ai-teal));-webkit-background-clip:text;background-clip:text;color:transparent}',
     '.dp-ai-badge{display:inline-flex;align-items:center;gap:4px;margin-top:6px;padding:5px 12px;border-radius:999px;font-weight:900;font-size:.74rem;',
     '  letter-spacing:.03em;color:#fff;background:linear-gradient(100deg,#f4a52c,#e8743a);box-shadow:0 4px 12px -4px rgba(232,116,58,.6);white-space:nowrap}',
@@ -88,7 +88,7 @@
     '.dp-ai-reset:hover{background:#f3f8fb}',
     '.dp-ai-note{max-width:360px;margin:10px auto 0;text-align:center;font-size:.76rem;color:var(--ai-soft);opacity:.85}',
     /* sağ sütun */
-    '.dp-ai-h{margin:0 0 12px;font-family:"Nunito",sans-serif;font-weight:900;font-size:1.08rem;color:var(--ai-ink)}',
+    '.dp-ai-h{margin:0 0 12px;font-family:var(--font-head,"Nunito"),sans-serif;font-weight:900;font-size:1.08rem;color:var(--ai-ink)}',
     '.dp-ai-channels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:24px}',
     '@container (max-width:420px){.dp-ai-channels{grid-template-columns:minmax(0,1fr)}}',
     '.dp-ai-ch{background:var(--ai-card);border:1px solid var(--ai-line);border-radius:14px;padding:12px 13px;display:flex;gap:10px;align-items:flex-start;min-width:0}',
