@@ -156,14 +156,14 @@ html.tur-park [data-tur]:not([data-tur~="park"]),html.tur-atolye [data-tur]:not(
 .icindekiler li{flex:0 0 auto;margin-right:8px}
 .icindekiler li:last-child{margin-right:0}
 .icindekiler a{display:flex;align-items:center;min-height:44px;padding:8px 14px;border:1px solid var(--line-2);border-radius:999px;background:var(--surface);color:var(--ink);font:700 15px/1.2 'Albert Sans',sans-serif;text-decoration:none;white-space:nowrap}
-.icindekiler a .ic{margin-right:8px;width:18px;height:18px;color:var(--muted)}
+.icindekiler a .ic{margin-right:8px;width:18px;height:18px;color:var(--c-fg)}
 .icindekiler a[aria-current="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .icindekiler a[aria-current="true"] .ic{color:var(--bg)}
 @media (min-width:720px){ .icindekiler{margin:0 -24px} .icindekiler ul{padding:8px 24px} }
 @media (min-width:1024px){
   .sayfa{grid-template-columns:240px minmax(0,1fr);column-gap:48px;align-items:start}
   .icindekiler{top:88px;margin:0;border:0;background:transparent;max-height:calc(100vh - 104px);overflow-y:auto}
-  .icindekiler .ic-b{display:block;font:700 14px/1.4 'Albert Sans',sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--teal-fg);margin:4px 0 8px}
+  .icindekiler .ic-b{display:block;font:700 14px/1.4 'Albert Sans',sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--genel-fg);margin:4px 0 8px}
   .icindekiler ul{display:block;overflow:visible;padding:0}
   .icindekiler li{margin:0 0 4px}
   .icindekiler a{border:0;border-radius:10px;background:transparent;padding:8px 12px;white-space:normal}
@@ -175,12 +175,13 @@ html.tur-park [data-tur]:not([data-tur~="park"]),html.tur-atolye [data-tur]:not(
 .kat:first-child{border-top:0}
 @media (min-width:1024px){ .kat{padding:48px 0 16px;scroll-margin-top:88px} .kat:first-child{padding-top:8px} }
 .kat-bas{display:flex;align-items:flex-start;margin-bottom:24px}
+.kat::before{content:"";display:block;width:48px;height:4px;margin:-41px 0 37px;border-radius:0 0 3px 3px;background:var(--c)}
+.kat:first-child::before{display:none}
+@media (min-width:1024px){ .kat::before{margin:-49px 0 45px} }
 .kat-bas .ikon{display:flex;align-items:center;justify-content:center;flex:0 0 48px;height:48px;border-radius:14px;margin-right:16px}
 .kat-bas .ikon .ic{width:24px;height:24px}
 .kat-bas h2{font-size:clamp(24px,3vw,32px);margin-bottom:6px}
 .kat-bas p{margin:0;font-size:18px;color:var(--muted)}
-.ik-mavi{background:var(--blue-bg);color:var(--blue-fg)} .ik-teal{background:var(--teal-bg);color:var(--teal-fg)} .ik-yesil{background:var(--green-bg);color:var(--green-fg)}
-.ik-turuncu{background:var(--orange-bg);color:var(--orange-fg)} .ik-sari{background:var(--yellow-bg);color:var(--yellow-fg)}
 .kat-ic{display:grid;grid-template-columns:minmax(0,1fr);gap:24px}
 @media (min-width:1024px){ .kat-ic.gorselli{grid-template-columns:minmax(0,1fr) 200px;gap:40px;align-items:start} }
 .ozl-izgara{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
@@ -236,18 +237,59 @@ html.tur-park [data-tur]:not([data-tur~="park"]),html.tur-atolye [data-tur]:not(
 @media (min-width:1024px){ .ara-cagri{grid-template-columns:minmax(0,1fr) auto;padding:28px 32px} }
 .ek-kart{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:24px}
 .ek-kart h3{display:flex;align-items:center;flex-wrap:wrap;font-size:22px}
-.ek-kart h3 .ic{margin-right:10px;color:var(--yellow-fg)}
+.ek-kart h3 .ic{margin-right:10px;color:var(--c-fg)}
 .ek-kart h3 .rozet{margin-left:10px}
 .ek-kart h4{font:600 20px/1.3 'Fredoka',sans-serif;margin:0 0 10px}
 .ek-kart+.ek-kart{margin-top:16px}
 .liste{list-style:none;margin:0 0 20px;padding:0}
 .liste li{display:flex;align-items:flex-start;padding:5px 0}
-.liste li .ic{color:var(--blue-fg);margin:3px 10px 0 0;width:20px;height:20px}
+.liste li .ic{color:var(--c-fg);margin:3px 10px 0 0;width:20px;height:20px}
 .digipuan{display:flex;align-items:flex-start;margin-top:20px;padding:16px;border-radius:14px;background:var(--yellow-bg)}
 .digipuan .ic{margin:3px 12px 0 0;color:var(--yellow-fg)}
 .cipler{display:flex;flex-wrap:wrap;list-style:none;margin:8px -4px 0;padding:0}
-.cipler li{margin:4px;padding:6px 14px;border-radius:999px;background:var(--teal-bg);color:var(--ink);font-size:15px;line-height:1.4}
+.cipler li{margin:4px;padding:6px 14px;border-radius:999px;background:var(--c-bg);color:var(--ink);font-size:15px;line-height:1.4}
 .geri-don{margin-top:32px}
+
+/* ── Renk sistemi (2e) — index.html ve ozellikler.html'de birebir aynı blok.
+   Anlam: oyun parkı turuncu (+ sarı), atölye ve sınıf yeşil (+ turkuaz), ikisi birden / genel / destek mavi, ek hizmetler sarı, size özel turkuaz.
+   --x: logo rengi (çizgi, şekil) · --x-fg: koyu ton (küçük etiket ve ikon, ≥ 4.5:1) · --x-bg: açık ton (ikon kutusu, rozet) · --x-soft: bölüm zemini (~%6).
+   Metin hep mürekkep; renkli metin yalnız küçük etiketlerde. Bir bölümde tek ana renk: bölüm .rk-<ad> sınıfıyla --c* değişkenlerini alır. ── */
+:root{
+  --park:#F28A3A; --park-2:#F7B52C; --park-fg:#A84C12; --park-bg:#FDEBDD; --park-soft:#FEF8F3;
+  --atolye:#7CC243; --atolye-2:#34B6C9; --atolye-fg:#3B6E12; --atolye-bg:#EAF6DE; --atolye-soft:#F7FBF4;
+  --genel:#2F86D4; --genel-2:#34B6C9; --genel-fg:#1565C0; --genel-bg:#E4F0FB; --genel-soft:#F3F8FC;
+  --ek:#F7B52C; --ek-2:#F28A3A; --ek-fg:#7A5300; --ek-bg:#FEF3D9; --ek-soft:#FFFBF2;
+  --ozel:#34B6C9; --ozel-2:#2F86D4; --ozel-fg:#0B6F7D; --ozel-bg:#E0F5F8; --ozel-soft:#F3FBFC;
+  --serit-f:none;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --park-fg:#F7AE74; --park-bg:#3A2616; --park-soft:#272320;
+  --atolye-fg:#A9DC79; --atolye-bg:#1E3417; --atolye-soft:#192A22;
+  --genel-fg:#8CC2F2; --genel-bg:#16314A; --genel-soft:#122533;
+  --ek-fg:#F9CF6B; --ek-bg:#3A2F12; --ek-soft:#24261F;
+  --ozel-fg:#7FD9E5; --ozel-bg:#123540; --ozel-soft:#132A32;
+  --serit-f:brightness(.72) saturate(.9);
+} }
+:root[data-theme="dark"]{
+  --park-fg:#F7AE74; --park-bg:#3A2616; --park-soft:#272320;
+  --atolye-fg:#A9DC79; --atolye-bg:#1E3417; --atolye-soft:#192A22;
+  --genel-fg:#8CC2F2; --genel-bg:#16314A; --genel-soft:#122533;
+  --ek-fg:#F9CF6B; --ek-bg:#3A2F12; --ek-soft:#24261F;
+  --ozel-fg:#7FD9E5; --ozel-bg:#123540; --ozel-soft:#132A32;
+  --serit-f:brightness(.72) saturate(.9);
+}
+:root,.rk-genel,.rk-destek{--c:var(--genel);--c-2:var(--genel-2);--c-fg:var(--genel-fg);--c-bg:var(--genel-bg);--c-soft:var(--genel-soft)}
+.rk-park{--c:var(--park);--c-2:var(--park-2);--c-fg:var(--park-fg);--c-bg:var(--park-bg);--c-soft:var(--park-soft)}
+.rk-atolye{--c:var(--atolye);--c-2:var(--atolye-2);--c-fg:var(--atolye-fg);--c-bg:var(--atolye-bg);--c-soft:var(--atolye-soft)}
+.rk-ek{--c:var(--ek);--c-2:var(--ek-2);--c-fg:var(--ek-fg);--c-bg:var(--ek-bg);--c-soft:var(--ek-soft)}
+.rk-ozel{--c:var(--ozel);--c-2:var(--ozel-2);--c-fg:var(--ozel-fg);--c-bg:var(--ozel-bg);--c-soft:var(--ozel-soft)}
+.zemin{background:var(--c-soft)}
+.kucuk-baslik{color:var(--c-fg)}
+.ozellik .ikon,.kat-bas .ikon{background:var(--c-bg);color:var(--c-fg)}
+.r-yakinda{background:var(--surface-2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line-2)}
+/* son çağrı: koyu mürekkep zemin üstünde logonun renklerinden yumuşak geçiş */
+.kapanis{background-image:radial-gradient(60% 90% at 0% 0%,rgba(242,138,58,.22),rgba(242,138,58,0) 70%),radial-gradient(55% 85% at 100% 100%,rgba(124,194,67,.16),rgba(124,194,67,0) 70%),radial-gradient(50% 80% at 100% 0%,rgba(47,134,212,.22),rgba(47,134,212,0) 70%)}
+/* ── renk sistemi sonu ── */
 </style>
 </head>
 <body>
@@ -286,24 +328,24 @@ html.tur-park [data-tur]:not([data-tur~="park"]),html.tur-atolye [data-tur]:not(
   <nav class="icindekiler" id="icindekiler" aria-label="Bu sayfadaki bölümler">
     <span class="ic-b" aria-hidden="true">Bu sayfada</span>
     <ul>
-      <li><a href="#ana-ekran"><svg class="ic" aria-hidden="true"><use href="#i-house"/></svg>Ana ekran ve Bugün</a></li>
-      <li><a href="#giris-iceride"><svg class="ic" aria-hidden="true"><use href="#i-door-open"/></svg>Giriş ve içeride</a></li>
-      <li><a href="#kafe-kasa"><svg class="ic" aria-hidden="true"><use href="#i-coffee"/></svg>Kafe ve kasa</a></li>
-      <li><a href="#rezervasyon-uyelik"><svg class="ic" aria-hidden="true"><use href="#i-calendar-days"/></svg>Rezervasyon ve üyelik</a></li>
-      <li><a href="#atolye-siniflar"><svg class="ic" aria-hidden="true"><use href="#i-palette"/></svg>Atölye ve sınıflar</a></li>
-      <li><a href="#odemeler-hatirlatmalar"><svg class="ic" aria-hidden="true"><use href="#i-wallet"/></svg>Ödemeler ve hatırlatmalar</a></li>
-      <li><a href="#belgeler"><svg class="ic" aria-hidden="true"><use href="#i-award"/></svg>Belgeler</a></li>
-      <li><a href="#raporlar"><svg class="ic" aria-hidden="true"><use href="#i-chart-column"/></svg>Raporlar</a></li>
-      <li><a href="#cihazlar-yedek"><svg class="ic" aria-hidden="true"><use href="#i-cloud"/></svg>Cihazlar ve yedek</a></li>
-      <li><a href="#ayarlar"><svg class="ic" aria-hidden="true"><use href="#i-settings"/></svg>Ayarlar</a></li>
-      <li><a href="#ek-hizmetler"><svg class="ic" aria-hidden="true"><use href="#i-sparkles"/></svg>Ek hizmetler</a></li>
+      <li class="rk-genel"><a href="#ana-ekran"><svg class="ic" aria-hidden="true"><use href="#i-house"/></svg>Ana ekran ve Bugün</a></li>
+      <li class="rk-park"><a href="#giris-iceride"><svg class="ic" aria-hidden="true"><use href="#i-door-open"/></svg>Giriş ve içeride</a></li>
+      <li class="rk-park"><a href="#kafe-kasa"><svg class="ic" aria-hidden="true"><use href="#i-coffee"/></svg>Kafe ve kasa</a></li>
+      <li class="rk-park"><a href="#rezervasyon-uyelik"><svg class="ic" aria-hidden="true"><use href="#i-calendar-days"/></svg>Rezervasyon ve üyelik</a></li>
+      <li class="rk-atolye"><a href="#atolye-siniflar"><svg class="ic" aria-hidden="true"><use href="#i-palette"/></svg>Atölye ve sınıflar</a></li>
+      <li class="rk-atolye"><a href="#odemeler-hatirlatmalar"><svg class="ic" aria-hidden="true"><use href="#i-wallet"/></svg>Ödemeler ve hatırlatmalar</a></li>
+      <li class="rk-atolye"><a href="#belgeler"><svg class="ic" aria-hidden="true"><use href="#i-award"/></svg>Belgeler</a></li>
+      <li class="rk-genel"><a href="#raporlar"><svg class="ic" aria-hidden="true"><use href="#i-chart-column"/></svg>Raporlar</a></li>
+      <li class="rk-genel"><a href="#cihazlar-yedek"><svg class="ic" aria-hidden="true"><use href="#i-cloud"/></svg>Cihazlar ve yedek</a></li>
+      <li class="rk-genel"><a href="#ayarlar"><svg class="ic" aria-hidden="true"><use href="#i-settings"/></svg>Ayarlar</a></li>
+      <li class="rk-ek"><a href="#ek-hizmetler"><svg class="ic" aria-hidden="true"><use href="#i-sparkles"/></svg>Ek hizmetler</a></li>
     </ul>
   </nav>
 
   <div class="govde">
     <!-- 1. ANA EKRAN VE BUGÜN -->
-    <section class="kat" id="ana-ekran" aria-labelledby="k-ana">
-      <div class="kat-bas"><span class="ikon ik-mavi"><svg class="ic" aria-hidden="true"><use href="#i-house"/></svg></span><div><h2 id="k-ana">Ana ekran ve Bugün</h2><p>0.4.0 ile yeni görünüm: solda düzenli bir menü, üstte günün işleri.</p></div></div>
+    <section class="kat rk-genel" id="ana-ekran" aria-labelledby="k-ana">
+      <div class="kat-bas"><span class="ikon"><svg class="ic" aria-hidden="true"><use href="#i-house"/></svg></span><div><h2 id="k-ana">Ana ekran ve Bugün</h2><p>0.4.0 ile yeni görünüm: solda düzenli bir menü, üstte günün işleri.</p></div></div>
       <div class="kat-ic gorselli">
         <div class="ozl-izgara">
           <article class="ozl"><h3>Bugün satırı</h3><p>Yoklaması alınmayan dersler, geciken ödemeler, bugünkü ve yarınki rezervasyonlar, doğum günleri, süresi dolmak üzere olan çocuklar ve son iki derse gelmeyen öğrenciler ekranın üstünde. Birine dokununca ilgili kişiler ve yapılacak iş açılır.</p></article>
@@ -318,8 +360,8 @@ html.tur-park [data-tur]:not([data-tur~="park"]),html.tur-atolye [data-tur]:not(
     </section>
 
     <!-- 2. GİRİŞ VE İÇERİDE -->
-    <section class="kat" id="giris-iceride" aria-labelledby="k-giris">
-      <div class="kat-bas"><span class="ikon ik-teal"><svg class="ic" aria-hidden="true"><use href="#i-door-open"/></svg></span><div><h2 id="k-giris">Giriş ve içeride</h2><p>Kapıda hızlı kayıt, içeride süre ve ücret takibi.</p></div></div>
+    <section class="kat rk-park" id="giris-iceride" aria-labelledby="k-giris">
+      <div class="kat-bas"><span class="ikon"><svg class="ic" aria-hidden="true"><use href="#i-door-open"/></svg></span><div><h2 id="k-giris">Giriş ve içeride</h2><p>Kapıda hızlı kayıt, içeride süre ve ücret takibi.</p></div></div>
       <div class="kat-ic gorselli">
         <div class="ozl-izgara">
           <article class="ozl"><h3>Yeni giriş</h3><p>Çocuğun adı, doğum tarihi ya da yaşı, veli adı ve telefonu. Daha önce gelmiş bir çocuk ya da veli yazıldığında bilgileri önerilir.</p></article>
@@ -336,8 +378,8 @@ html.tur-park [data-tur]:not([data-tur~="park"]),html.tur-atolye [data-tur]:not(
     </section>
 
     <!-- 3. KAFE VE KASA -->
-    <section class="kat" id="kafe-kasa" aria-labelledby="k-kafe">
-      <div class="kat-bas"><span class="ikon ik-sari"><svg class="ic" aria-hidden="true"><use href="#i-coffee"/></svg></span><div><h2 id="k-kafe">Kafe ve kasa</h2><p>Adisyon, stok, tahsilat ve fiş tek yerde.</p></div></div>
+    <section class="kat rk-park" id="kafe-kasa" aria-labelledby="k-kafe">
+      <div class="kat-bas"><span class="ikon"><svg class="ic" aria-hidden="true"><use href="#i-coffee"/></svg></span><div><h2 id="k-kafe">Kafe ve kasa</h2><p>Adisyon, stok, tahsilat ve fiş tek yerde.</p></div></div>
       <div class="ozl-izgara">
         <article class="ozl"><h3>Adisyon</h3><p>Bir veli ya da masa için adisyon açın, menüden dokunarak ürün ekleyin; açık adisyonun içindeki her ürünü adet ve ara toplamıyla görün.</p></article>
         <article class="ozl"><h3>Stok rozetleri</h3><p>Stoğu azalan üründe "Az kaldı", biten üründe "Tükendi" rozeti. Satışta stok kendiliğinden düşer.</p></article>
@@ -350,8 +392,8 @@ html.tur-park [data-tur]:not([data-tur~="park"]),html.tur-atolye [data-tur]:not(
     </section>
 
     <!-- 4. REZERVASYON VE ÜYELİK -->
-    <section class="kat" id="rezervasyon-uyelik" aria-labelledby="k-rez">
-      <div class="kat-bas"><span class="ikon ik-turuncu"><svg class="ic" aria-hidden="true"><use href="#i-calendar-days"/></svg></span><div><h2 id="k-rez">Rezervasyon ve üyelik</h2><p>Doğum günü, etkinlik ve ön ödemeli saat paketleri.</p></div></div>
+    <section class="kat rk-park" id="rezervasyon-uyelik" aria-labelledby="k-rez">
+      <div class="kat-bas"><span class="ikon"><svg class="ic" aria-hidden="true"><use href="#i-calendar-days"/></svg></span><div><h2 id="k-rez">Rezervasyon ve üyelik</h2><p>Doğum günü, etkinlik ve ön ödemeli saat paketleri.</p></div></div>
       <div class="ozl-izgara">
         <article class="ozl"><h3>Rezervasyon takvimi</h3><p>Aylık takvimde doluluğu görün, günü seçip rezervasyon ekleyin: veli, saat, kişi sayısı, paket ve isteğe bağlı görevli personel.</p></article>
         <article class="ozl"><h3>Paketler ve alanlar</h3><p>Doğum günü ve etkinlik paketlerini, ayrı rezerve edilen alanları (salon, oda, atölye) tanımlayın. Aynı alan aynı saatte iki kez rezerve edilemez.</p></article>
@@ -365,8 +407,8 @@ html.tur-park [data-tur]:not([data-tur~="park"]),html.tur-atolye [data-tur]:not(
     </section>
 
     <!-- 5. ATÖLYE VE SINIFLAR -->
-    <section class="kat" id="atolye-siniflar" aria-labelledby="k-atolye">
-      <div class="kat-bas"><span class="ikon ik-yesil"><svg class="ic" aria-hidden="true"><use href="#i-palette"/></svg></span><div><h2 id="k-atolye">Atölye ve sınıflar</h2><p>Tekrar eden dersler, yoklama ve öğrenciler.</p></div></div>
+    <section class="kat rk-atolye" id="atolye-siniflar" aria-labelledby="k-atolye">
+      <div class="kat-bas"><span class="ikon"><svg class="ic" aria-hidden="true"><use href="#i-palette"/></svg></span><div><h2 id="k-atolye">Atölye ve sınıflar</h2><p>Tekrar eden dersler, yoklama ve öğrenciler.</p></div></div>
       <div class="kat-ic gorselli">
         <div class="ozl-izgara">
           <article class="ozl"><h3>Bugünkü dersler</h3><p>Her ders saati, eğitmeni ve doluluğuyla; "şimdi derste" ve "yoklama bekliyor" durumları bir bakışta.</p></article>
@@ -390,8 +432,8 @@ html.tur-park [data-tur]:not([data-tur~="park"]),html.tur-atolye [data-tur]:not(
     </section>
 
     <!-- 6. ÖDEMELER VE HATIRLATMALAR -->
-    <section class="kat" id="odemeler-hatirlatmalar" aria-labelledby="k-odeme">
-      <div class="kat-bas"><span class="ikon ik-turuncu"><svg class="ic" aria-hidden="true"><use href="#i-wallet"/></svg></span><div><h2 id="k-odeme">Ödemeler ve hatırlatmalar</h2><p>Ödeme alındı mı, ders ne zaman, yoklama unutuldu mu: DigiPark hatırlatır.</p></div></div>
+    <section class="kat rk-atolye" id="odemeler-hatirlatmalar" aria-labelledby="k-odeme">
+      <div class="kat-bas"><span class="ikon"><svg class="ic" aria-hidden="true"><use href="#i-wallet"/></svg></span><div><h2 id="k-odeme">Ödemeler ve hatırlatmalar</h2><p>Ödeme alındı mı, ders ne zaman, yoklama unutuldu mu: DigiPark hatırlatır.</p></div></div>
       <div class="kat-ic gorselli">
         <div class="ozl-izgara">
           <article class="ozl"><h3>Ödemeler ekranı</h3><p>Geciken, bugün ödenecek ve yaklaşan ödemeler ayrı listelerde; veliye hatırlatma ve ödeme alma tek dokunuşta.</p></article>
@@ -408,8 +450,8 @@ html.tur-park [data-tur]:not([data-tur~="park"]),html.tur-atolye [data-tur]:not(
     </section>
 
     <!-- 7. BELGELER -->
-    <section class="kat" id="belgeler" aria-labelledby="k-belge">
-      <div class="kat-bas"><span class="ikon ik-sari"><svg class="ic" aria-hidden="true"><use href="#i-award"/></svg></span><div><h2 id="k-belge">Belgeler</h2><p>Dönem sonunda logonuz ve renklerinizle katılım belgesi.</p></div></div>
+    <section class="kat rk-atolye" id="belgeler" aria-labelledby="k-belge">
+      <div class="kat-bas"><span class="ikon"><svg class="ic" aria-hidden="true"><use href="#i-award"/></svg></span><div><h2 id="k-belge">Belgeler</h2><p>Dönem sonunda logonuz ve renklerinizle katılım belgesi.</p></div></div>
       <div class="ozl-izgara">
         <article class="ozl"><h3>Katılım belgesi</h3><p>Sınıfın öğrencilerine işletmenizin adı, logosu ve renkleriyle belge. Katılım sayısı yoklamadan gelir: "24 dersin 22'sine katıldı".</p></article>
         <article class="ozl"><h3>4 şablon</h3><p>Renkli, Klasik, Modern ve Sade (yazıcı dostu). Varsayılanı seçin, belgede tek dokunuşla değiştirin.</p></article>
@@ -430,8 +472,8 @@ html.tur-park [data-tur]:not([data-tur~="park"]),html.tur-atolye [data-tur]:not(
     </section>
 
     <!-- 8. RAPORLAR -->
-    <section class="kat" id="raporlar" aria-labelledby="k-rapor">
-      <div class="kat-bas"><span class="ikon ik-mavi"><svg class="ic" aria-hidden="true"><use href="#i-chart-column"/></svg></span><div><h2 id="k-rapor">Raporlar</h2><p>Her rapor ayrı bölümde, hepsi aynı tarih aralığıyla.</p></div></div>
+    <section class="kat rk-genel" id="raporlar" aria-labelledby="k-rapor">
+      <div class="kat-bas"><span class="ikon"><svg class="ic" aria-hidden="true"><use href="#i-chart-column"/></svg></span><div><h2 id="k-rapor">Raporlar</h2><p>Her rapor ayrı bölümde, hepsi aynı tarih aralığıyla.</p></div></div>
       <div class="kat-ic gorselli">
         <div class="ozl-izgara">
           <article class="ozl"><h3>Ortak tarih seçici</h3><p>Bugün, Dün, Bu Hafta, Bu Ay ya da Özel Aralık; bütün bölümler aynı anda güncellenir. Son açtığınız bölüm hatırlanır.</p></article>
@@ -448,8 +490,8 @@ html.tur-park [data-tur]:not([data-tur~="park"]),html.tur-atolye [data-tur]:not(
     </section>
 
     <!-- 9. CİHAZLAR VE YEDEK -->
-    <section class="kat" id="cihazlar-yedek" aria-labelledby="k-cihaz">
-      <div class="kat-bas"><span class="ikon ik-teal"><svg class="ic" aria-hidden="true"><use href="#i-cloud"/></svg></span><div><h2 id="k-cihaz">Cihazlar ve yedek</h2><p>Bilgisayarda, tablette, telefonda aynı güncel veri.</p></div></div>
+    <section class="kat rk-genel" id="cihazlar-yedek" aria-labelledby="k-cihaz">
+      <div class="kat-bas"><span class="ikon"><svg class="ic" aria-hidden="true"><use href="#i-cloud"/></svg></span><div><h2 id="k-cihaz">Cihazlar ve yedek</h2><p>Bilgisayarda, tablette, telefonda aynı güncel veri.</p></div></div>
       <div class="ozl-izgara">
         <article class="ozl"><h3>Her cihazda</h3><p>Windows ve Mac'te masaüstü uygulaması, Android tablet ve telefonda uygulama. Tabletten başlayın, istediğiniz zaman bilgisayar ekleyin.</p></article>
         <article class="ozl"><h3>Google Drive eşitleme</h3><p>Cihazlar aynı Google hesabıyla bağlanır, değişiklikler kendiliğinden eşitlenir; beklemek istemezseniz "Şimdi Eşitle". Verileriniz kendi Google Drive'ınızda durur.</p></article>
@@ -462,8 +504,8 @@ html.tur-park [data-tur]:not([data-tur~="park"]),html.tur-atolye [data-tur]:not(
     </section>
 
     <!-- 10. AYARLAR -->
-    <section class="kat" id="ayarlar" aria-labelledby="k-ayar">
-      <div class="kat-bas"><span class="ikon ik-mavi"><svg class="ic" aria-hidden="true"><use href="#i-settings"/></svg></span><div><h2 id="k-ayar">Ayarlar</h2><p>Konulara ayrılmış 7 bölüm; son açtığınız bölüm hatırlanır.</p></div></div>
+    <section class="kat rk-genel" id="ayarlar" aria-labelledby="k-ayar">
+      <div class="kat-bas"><span class="ikon"><svg class="ic" aria-hidden="true"><use href="#i-settings"/></svg></span><div><h2 id="k-ayar">Ayarlar</h2><p>Konulara ayrılmış 7 bölüm; son açtığınız bölüm hatırlanır.</p></div></div>
       <div class="ayar-izgara">
         <article class="ayar"><h3><svg class="ic" aria-hidden="true"><use href="#i-building-2"/></svg>İşletme</h3><ul>
           <li><b>İşletme Bilgileri</b>Ad, telefon, adres, logo, isteğe bağlı imza görseli, belgenin iki rengi, varsayılan belge şablonu, fişte logo.</li>
@@ -503,8 +545,8 @@ html.tur-park [data-tur]:not([data-tur~="park"]),html.tur-atolye [data-tur]:not(
     </section>
 
     <!-- 11. EK HİZMETLER -->
-    <section class="kat" id="ek-hizmetler" aria-labelledby="k-ek">
-      <div class="kat-bas"><span class="ikon ik-sari"><svg class="ic" aria-hidden="true"><use href="#i-sparkles"/></svg></span><div><h2 id="k-ek">Ek hizmetler</h2><p>Yukarıdaki bütün özellikler DigiPark'a dahildir. Puan Kulübü ve AI Asistan ayrı ek hizmetlerdir.</p></div></div>
+    <section class="kat rk-ek" id="ek-hizmetler" aria-labelledby="k-ek">
+      <div class="kat-bas"><span class="ikon"><svg class="ic" aria-hidden="true"><use href="#i-sparkles"/></svg></span><div><h2 id="k-ek">Ek hizmetler</h2><p>Yukarıdaki bütün özellikler DigiPark'a dahildir. Puan Kulübü ve AI Asistan ayrı ek hizmetlerdir.</p></div></div>
       <article class="ek-kart" aria-labelledby="puan-b">
         <h3 id="puan-b"><svg class="ic" aria-hidden="true"><use href="#i-star"/></svg>Puan Kulübü <span class="rozet r-ek">Ek hizmet</span></h3>
         <h4>Çocuklar geldikçe puan toplasın, hediyesini alıp mutlu ayrılsın</h4>

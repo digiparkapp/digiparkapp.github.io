@@ -110,10 +110,12 @@ html.tur-park [data-tur]:not([data-tur~="park"]),html.tur-atolye [data-tur]:not(
 }
 @media (min-width:1024px){ .ust-nav{display:flex;margin-right:8px} #menu-btn{display:none} }
 
-/* açılış */
-.acilis{padding:32px 0 56px}
-.acilis .wrap{display:grid;grid-template-columns:1fr;gap:28px;align-items:center}
-@media (min-width:1024px){ .acilis{padding:48px 0 80px} .acilis .wrap{grid-template-columns:minmax(420px,1fr) 1.75fr;gap:40px} }
+/* açılış: solda metin, sağda yalnız uygulama ekranı (yakın kırpma) ve arkasında seçili türün renginde hafif bir zemin şekli */
+html.tur-park .acilis{--c:var(--park);--c-2:var(--park-2);--c-fg:var(--park-fg);--c-bg:var(--park-bg);--c-soft:var(--park-soft)}
+html.tur-atolye .acilis{--c:var(--atolye);--c-2:var(--atolye-2);--c-fg:var(--atolye-fg);--c-bg:var(--atolye-bg);--c-soft:var(--atolye-soft)}
+.acilis{padding:32px 0 48px;overflow:hidden}
+.acilis .wrap{display:grid;grid-template-columns:minmax(0,1fr);gap:32px;align-items:center}
+@media (min-width:1024px){ .acilis{padding:48px 0 64px} .acilis .wrap{grid-template-columns:minmax(400px,1fr) minmax(0,1.85fr);gap:40px} }
 .secici-l{display:block;font-weight:700;margin-bottom:8px}
 .seg{display:inline-flex;flex-wrap:wrap;padding:4px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line);margin-bottom:24px}
 .seg button{min-height:44px;padding:8px 18px;border:0;border-radius:999px;background:transparent;color:var(--ink);font:700 16px/1.2 'Albert Sans',sans-serif;cursor:pointer}
@@ -121,23 +123,32 @@ html.tur-park [data-tur]:not([data-tur~="park"]),html.tur-atolye [data-tur]:not(
 @media (max-width:719px){ .seg{display:grid;grid-template-columns:repeat(3,1fr);border-radius:16px;width:100%} .seg button{border-radius:12px;padding:8px 6px;font-size:15px} }
 .acilis p.giris{font-size:19px;color:var(--muted);max-width:36em}
 .deneme{display:flex;align-items:center;margin-top:16px;font-weight:700;color:var(--green-fg)} .deneme .ic{margin-right:8px}
+.acilis .deneme{color:var(--ink)} .acilis .deneme .ic{color:var(--c-fg)}
 .medya{position:relative;padding-bottom:32px}
 .foto{position:relative;overflow:hidden;border-radius:20px;background:var(--surface-2)}
 .foto::after{content:"";position:absolute;top:0;left:0;right:0;bottom:0;background:var(--foto-ov);pointer-events:none}
 .foto img{display:block;width:100%;height:auto;filter:var(--foto-f)}
 .foto.kutu{height:0}
 .foto.kutu img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover}
-.acilis .medya{padding-bottom:0}
-.acilis .foto.kutu{padding-top:62.5%}
-/* önündeki görsel: uygulamanın Bugün satırı + rakam kartları, yakın kırpma (2× kaynak). Telefonda telefon düzeni fotoğrafın altında,
-   720 px ve üstünde bilgisayar düzeni; fotoğraf sağ üstte (genişliğin %70'i, 16:10), kırpma solda altta (%90) */
-.acilis .on-ekran{position:relative;z-index:2}
-.acilis .kirpma{overflow:hidden;border-radius:16px;border:1px solid var(--frame-bd);background:var(--surface-2);box-shadow:var(--shadow)}
+/* uygulamanın Bugün satırı + rakam kartları, yakın kırpma (2× kaynak): telefonda telefon düzeni, 720 px ve üstünde bilgisayar düzeni,
+   sütunun tamamında. Arkasındaki şekil seçili türün açık tonunda (park turuncu, atölye yeşil, ikisi mavi); sayfa dışına taşanı .acilis keser */
+.acilis .medya{position:relative;padding:20px 0 24px}
+.acilis .medya::before{content:"";position:absolute;top:0;right:-40px;bottom:0;left:18%;border-radius:32px;background:var(--c-bg);transition:background-color .3s ease}
+@media (prefers-reduced-motion: reduce){ .acilis .medya::before{transition:none} }
+.acilis .on-ekran{position:relative;z-index:1}
+.acilis .kirpma{overflow:hidden;border-radius:16px;border:1px solid var(--frame-bd);background:var(--surface-2);box-shadow:0 24px 48px -20px rgba(28,43,58,.35),0 2px 6px rgba(28,43,58,.08)}
+:root[data-tema-etkin="dark"] .acilis .kirpma{box-shadow:0 24px 48px -20px rgba(0,0,0,.7)}
 .acilis .kirpma img{display:block;width:100%;height:auto}
 .acilis .on-masa{display:none}
-.acilis .on-tel{width:calc(100% - 32px);max-width:320px;margin:-48px 0 0 auto}
-@media (min-width:720px){ .acilis .medya{padding-bottom:44.5%} .acilis .foto.kutu{margin-left:30%;padding-top:43.75%}
-  .acilis .on-masa{display:block;position:absolute;left:0;bottom:0;width:90%} .acilis .on-tel{display:none} }
+.acilis .on-tel{width:100%;max-width:382px;margin:0 auto}
+@media (min-width:720px){ .acilis .medya{padding:28px 0 32px} .acilis .on-masa{display:block;width:100%;max-width:744px;margin:0 auto} .acilis .on-tel{display:none} }
+@media (min-width:1024px){ .acilis .medya{padding:32px 0} .acilis .medya::before{left:14%} .acilis .on-masa{max-width:none} }
+
+/* açılışın altında tam genişlik alçak fotoğraf şeridi (top havuzu); telefonda 3:1, 720 px ve üstünde 7:1 kırpma */
+.serit{position:relative;height:136px;overflow:hidden;background:var(--surface-2)}
+.serit img{display:block;width:100%;height:100%;object-fit:cover;filter:var(--serit-f)}
+.serit::after{content:"";position:absolute;top:0;left:0;right:0;bottom:0;background:var(--foto-ov);pointer-events:none}
+@media (min-width:720px){ .serit{height:clamp(180px,15vw,240px)} }
 
 /* çerçeveler (markasız) */
 .fr{position:relative;background:var(--frame);border:1px solid var(--frame-bd);box-shadow:var(--shadow)}
@@ -167,7 +178,10 @@ html.tur-park [data-tur]:not([data-tur~="park"]),html.tur-atolye [data-tur]:not(
 @media (min-width:1024px){ .kartlar{grid-template-columns:repeat(3,1fr)} }
 .kart{display:flex;flex-direction:column;background:var(--bg);border:2px solid var(--line);border-radius:20px;overflow:hidden}
 .bolum:not(.alt) .kart{background:var(--surface)}
-html.tur-park .kart[data-k="park"],html.tur-atolye .kart[data-k="atolye"],html.tur-ikisi .kart[data-k="ikisi"]{border-color:var(--blue);box-shadow:var(--shadow)}
+.kart{position:relative;border-top:0}
+.kart::before{content:"";display:block;height:4px;background:var(--c)}
+html.tur-park .kart[data-k="park"],html.tur-atolye .kart[data-k="atolye"],html.tur-ikisi .kart[data-k="ikisi"]{border-color:var(--c);box-shadow:var(--shadow)}
+.kart .rozet.r-sec{background:var(--c-bg);color:var(--c-fg)}
 .kart .foto{border-radius:0;padding-top:75%;height:0}
 .kart .foto img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover}
 .kart-ic{display:flex;flex-direction:column;flex:1 1 auto;padding:20px}
@@ -176,14 +190,21 @@ html.tur-park .kart[data-k="park"],html.tur-atolye .kart[data-k="atolye"],html.t
 html.tur-park .kart[data-k="park"] h3 .rozet,html.tur-atolye .kart[data-k="atolye"] h3 .rozet,html.tur-ikisi .kart[data-k="ikisi"] h3 .rozet{display:inline-block}
 .liste{list-style:none;margin:0 0 20px;padding:0}
 .liste li{display:flex;align-items:flex-start;padding:5px 0}
-.liste li .ic{color:var(--green-fg);margin:3px 10px 0 0;width:20px;height:20px}
+.liste li .ic{color:var(--c-fg);margin:3px 10px 0 0;width:20px;height:20px}
 .kart .btns{margin-top:auto}
 
 /* öne çıkanlar */
-.sekmeler{display:flex;overflow-x:auto;margin:0 -16px 20px;padding:4px 16px 8px;-webkit-overflow-scrolling:touch}
+.sekme-satir{display:flex;align-items:center;overflow-x:auto;margin:0 -16px 20px;padding:4px 16px 8px;-webkit-overflow-scrolling:touch}
+.sekmeler{display:flex;flex:0 0 auto}
 .sekmeler button{flex:0 0 auto;min-height:44px;margin-right:8px;padding:8px 16px;border:1px solid var(--line-2);border-radius:999px;background:var(--surface);color:var(--ink);font:700 15px/1.2 'Albert Sans',sans-serif;cursor:pointer;white-space:nowrap}
-.sekmeler button[aria-selected="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-@media (min-width:1024px){ .sekmeler{flex-wrap:wrap;overflow:visible;margin:0 0 20px;padding:4px 0} .sekmeler button{margin-bottom:8px} }
+.sekmeler button[aria-selected="true"]{background:var(--c-bg);border-color:var(--c);box-shadow:inset 0 0 0 1px var(--c);color:var(--ink)}
+.tum-bag{flex:0 0 auto;display:inline-flex;align-items:center;min-height:44px;margin-left:8px;padding:8px 16px;border:1.5px dashed var(--line-2);border-radius:999px;color:var(--blue-fg);font:700 15px/1.2 'Albert Sans',sans-serif;text-decoration:none;white-space:nowrap}
+.tum-bag .ic{margin-left:8px;width:18px;height:18px}
+.tum-bag:hover{border-color:var(--blue-fg);background:var(--surface)}
+@media (min-width:1024px){ .sekme-satir{flex-wrap:wrap;overflow:visible;margin:0 0 20px;padding:4px 0} .sekmeler{flex-wrap:wrap} .sekmeler button,.tum-bag{margin-bottom:8px} }
+.tum-satir{margin:16px 0 0;color:var(--muted)}
+.tum-satir a{display:inline-flex;align-items:center;min-height:44px;font-weight:700;color:var(--blue-fg)}
+.tum-satir a .ic{margin-left:6px;width:18px;height:18px}
 .panel-yazi{max-width:48em;font-size:18px;color:var(--muted);min-height:3.2em}
 .cihazlar{display:flex;align-items:flex-start;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -16px;padding:8px 16px 16px;-webkit-overflow-scrolling:touch}
 .cihazlar>div{flex:0 0 auto;scroll-snap-align:center;margin-right:20px}
@@ -201,6 +222,7 @@ html.tur-park .kart[data-k="park"] h3 .rozet,html.tur-atolye .kart[data-k="atoly
   .cihazlar>div{width:auto;margin:0}
 }
 .c-ad{display:block;margin-top:10px;text-align:center;font-size:14px;color:var(--muted)}
+.c-ad::before{content:"";display:block;width:28px;height:3px;margin:0 auto 8px;border-radius:2px;background:var(--c)}
 .tema-btn{display:flex;align-items:center;justify-content:center;width:100%;min-height:44px;margin-bottom:12px;border:1px solid var(--line-2);border-radius:999px;background:var(--surface);color:var(--ink);font:700 15px/1.2 'Albert Sans',sans-serif;cursor:pointer}
 .tema-btn .ic{margin-right:8px}
 .tema-btn[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
@@ -214,15 +236,13 @@ html.tur-park .kart[data-k="park"] h3 .rozet,html.tur-atolye .kart[data-k="atoly
 @media (min-width:1024px){ .iki{grid-template-columns:1fr 1fr;gap:56px} .iki.ters>:first-child{order:2} }
 .kolaj{position:relative;padding-bottom:18%}
 .kolaj .kucuk{position:absolute;right:-8px;bottom:0;width:42%;border:6px solid var(--bg);border-radius:20px}
-.bolum.alt .kolaj .kucuk{border-color:var(--surface)}
+.bolum.alt .kolaj .kucuk{border-color:var(--surface)} .bolum.zemin .kolaj .kucuk{border-color:var(--c-soft)}
 .ozellik{display:flex;align-items:flex-start;padding:12px 0;border-top:1px solid var(--line)}
 .ozellik:first-of-type{border-top:0}
 .ozellik .ikon{display:flex;align-items:center;justify-content:center;flex:0 0 44px;height:44px;border-radius:12px;margin-right:14px}
 .ozellik .ikon .ic{width:22px;height:22px}
 .ozellik b{display:block;font-size:17px}
 .ozellik span{color:var(--muted)}
-.ik-mavi{background:var(--blue-bg);color:var(--blue-fg)} .ik-teal{background:var(--teal-bg);color:var(--teal-fg)} .ik-yesil{background:var(--green-bg);color:var(--green-fg)}
-.ik-turuncu{background:var(--orange-bg);color:var(--orange-fg)} .ik-sari{background:var(--yellow-bg);color:var(--yellow-fg)}
 .bolum .btns.son{margin-top:20px}
 
 /* ek hizmetler: Puan Kulübü tam genişlik (1024 px ve üstünde iki sütun), altında ince AI Asistan şeridi */
@@ -237,15 +257,16 @@ html.tur-park .kart[data-k="park"] h3 .rozet,html.tur-atolye .kart[data-k="atoly
 .ai-serit p{margin:0}
 @media (min-width:1024px){ .ai-serit{grid-template-columns:minmax(0,1fr) auto} }
 .cipler{display:flex;flex-wrap:wrap;list-style:none;margin:-4px;padding:0}
-.cipler li{margin:4px;padding:6px 14px;border-radius:999px;background:var(--teal-bg);color:var(--ink);font-size:15px;line-height:1.4}
+.cipler li{margin:4px;padding:6px 14px;border-radius:999px;background:var(--c-bg);color:var(--ink);font-size:15px;line-height:1.4}
 .cip-l{display:block;font-size:14px;color:var(--muted);margin-bottom:6px}
 .ek-kart{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:24px}
 .bolum.alt .ek-kart{background:var(--bg)}
+.ek-kart{border-top:4px solid var(--c)}
 .ek-kart h3{display:flex;align-items:center;flex-wrap:wrap}
-.ek-kart h3 .ic{margin-right:10px;color:var(--yellow-fg)}
+.ek-kart h3 .ic{margin-right:10px;color:var(--c-fg)}
 .ek-kart h3 .rozet{margin-left:10px}
 .ek-kart h4{font:600 20px/1.3 'Fredoka',sans-serif;margin:0 0 10px}
-.ek-kart .liste li .ic{color:var(--blue-fg)}
+.ek-kart .liste li .ic{color:var(--c-fg)}
 .digipuan{display:flex;align-items:flex-start;margin-top:20px;padding:16px;border-radius:14px;background:var(--yellow-bg)}
 .digipuan .ic{margin:3px 12px 0 0;color:var(--yellow-fg)}
 .ek-yan{display:grid;gap:20px;align-content:start}
@@ -288,11 +309,52 @@ html.tur-park .kart[data-k="park"] h3 .rozet,html.tur-atolye .kart[data-k="atoly
 @media (prefers-reduced-motion: reduce){ .mcubuk{transition:none} }
 @media (min-width:720px){ .mcubuk{display:none} }
 @media (max-width:719px){ body{padding-bottom:72px} }
+
+/* ── Renk sistemi (2e) — index.html ve ozellikler.html'de birebir aynı blok.
+   Anlam: oyun parkı turuncu (+ sarı), atölye ve sınıf yeşil (+ turkuaz), ikisi birden / genel / destek mavi, ek hizmetler sarı, size özel turkuaz.
+   --x: logo rengi (çizgi, şekil) · --x-fg: koyu ton (küçük etiket ve ikon, ≥ 4.5:1) · --x-bg: açık ton (ikon kutusu, rozet) · --x-soft: bölüm zemini (~%6).
+   Metin hep mürekkep; renkli metin yalnız küçük etiketlerde. Bir bölümde tek ana renk: bölüm .rk-<ad> sınıfıyla --c* değişkenlerini alır. ── */
+:root{
+  --park:#F28A3A; --park-2:#F7B52C; --park-fg:#A84C12; --park-bg:#FDEBDD; --park-soft:#FEF8F3;
+  --atolye:#7CC243; --atolye-2:#34B6C9; --atolye-fg:#3B6E12; --atolye-bg:#EAF6DE; --atolye-soft:#F7FBF4;
+  --genel:#2F86D4; --genel-2:#34B6C9; --genel-fg:#1565C0; --genel-bg:#E4F0FB; --genel-soft:#F3F8FC;
+  --ek:#F7B52C; --ek-2:#F28A3A; --ek-fg:#7A5300; --ek-bg:#FEF3D9; --ek-soft:#FFFBF2;
+  --ozel:#34B6C9; --ozel-2:#2F86D4; --ozel-fg:#0B6F7D; --ozel-bg:#E0F5F8; --ozel-soft:#F3FBFC;
+  --serit-f:none;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --park-fg:#F7AE74; --park-bg:#3A2616; --park-soft:#272320;
+  --atolye-fg:#A9DC79; --atolye-bg:#1E3417; --atolye-soft:#192A22;
+  --genel-fg:#8CC2F2; --genel-bg:#16314A; --genel-soft:#122533;
+  --ek-fg:#F9CF6B; --ek-bg:#3A2F12; --ek-soft:#24261F;
+  --ozel-fg:#7FD9E5; --ozel-bg:#123540; --ozel-soft:#132A32;
+  --serit-f:brightness(.72) saturate(.9);
+} }
+:root[data-theme="dark"]{
+  --park-fg:#F7AE74; --park-bg:#3A2616; --park-soft:#272320;
+  --atolye-fg:#A9DC79; --atolye-bg:#1E3417; --atolye-soft:#192A22;
+  --genel-fg:#8CC2F2; --genel-bg:#16314A; --genel-soft:#122533;
+  --ek-fg:#F9CF6B; --ek-bg:#3A2F12; --ek-soft:#24261F;
+  --ozel-fg:#7FD9E5; --ozel-bg:#123540; --ozel-soft:#132A32;
+  --serit-f:brightness(.72) saturate(.9);
+}
+:root,.rk-genel,.rk-destek{--c:var(--genel);--c-2:var(--genel-2);--c-fg:var(--genel-fg);--c-bg:var(--genel-bg);--c-soft:var(--genel-soft)}
+.rk-park{--c:var(--park);--c-2:var(--park-2);--c-fg:var(--park-fg);--c-bg:var(--park-bg);--c-soft:var(--park-soft)}
+.rk-atolye{--c:var(--atolye);--c-2:var(--atolye-2);--c-fg:var(--atolye-fg);--c-bg:var(--atolye-bg);--c-soft:var(--atolye-soft)}
+.rk-ek{--c:var(--ek);--c-2:var(--ek-2);--c-fg:var(--ek-fg);--c-bg:var(--ek-bg);--c-soft:var(--ek-soft)}
+.rk-ozel{--c:var(--ozel);--c-2:var(--ozel-2);--c-fg:var(--ozel-fg);--c-bg:var(--ozel-bg);--c-soft:var(--ozel-soft)}
+.zemin{background:var(--c-soft)}
+.kucuk-baslik{color:var(--c-fg)}
+.ozellik .ikon,.kat-bas .ikon{background:var(--c-bg);color:var(--c-fg)}
+.r-yakinda{background:var(--surface-2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line-2)}
+/* son çağrı: koyu mürekkep zemin üstünde logonun renklerinden yumuşak geçiş */
+.kapanis{background-image:radial-gradient(60% 90% at 0% 0%,rgba(242,138,58,.22),rgba(242,138,58,0) 70%),radial-gradient(55% 85% at 100% 100%,rgba(124,194,67,.16),rgba(124,194,67,0) 70%),radial-gradient(50% 80% at 100% 0%,rgba(47,134,212,.22),rgba(47,134,212,0) 70%)}
+/* ── renk sistemi sonu ── */
 </style>
 </head>
 <body>
 <!-- Simgeler: Lucide (ISC lisansı, assets/LICENSE-lucide.txt) — uygulamayla aynı alt küme -->
-<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><symbol id="i-door-open" viewBox="0 0 24 24"><path d="M10 21H2"/><path d="M10 3H7a2 2 0 00-2 2v16"/><path d="M14 12h.01"/><path d="M19 21V5a2 2 0 00-1.675-1.974l-6.163-1.013A1 1 0 0010 3v18a1 1 0 001.124.992z"/><path d="M22 21h-3"/></symbol><symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></symbol><symbol id="i-coffee" viewBox="0 0 24 24"><path d="M10 2v2"/><path d="M14 2v2"/><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/><path d="M6 2v2"/></symbol><symbol id="i-calendar-days" viewBox="0 0 24 24"><path d="M8 2v3"/><path d="M16 2v3"/><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M8 13h.01"/><path d="M12 13h.01"/><path d="M16 13h.01"/><path d="M8 17h.01"/><path d="M12 17h.01"/><path d="M16 17h.01"/></symbol><symbol id="i-ticket" viewBox="0 0 24 24"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/></symbol><symbol id="i-palette" viewBox="0 0 24 24"><path d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"/><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/></symbol><symbol id="i-star" viewBox="0 0 24 24"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></symbol><symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></symbol><symbol id="i-chart-column" viewBox="0 0 24 24"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></symbol><symbol id="i-clipboard-check" viewBox="0 0 24 24"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></symbol><symbol id="i-wallet" viewBox="0 0 24 24"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></symbol><symbol id="i-graduation-cap" viewBox="0 0 24 24"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></symbol><symbol id="i-message-circle" viewBox="0 0 24 24"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/></symbol><symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></symbol><symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></symbol><symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol><symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol><symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></symbol><symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol><symbol id="i-cake" viewBox="0 0 24 24"><path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8"/><path d="M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2.5 2 4 2 2-1 2-1"/><path d="M2 21h20"/><path d="M7 8v3"/><path d="M12 8v3"/><path d="M17 8v3"/><path d="M7 4h.01"/><path d="M12 4h.01"/><path d="M17 4h.01"/></symbol><symbol id="i-gift" viewBox="0 0 24 24"><path d="M12 7v14"/><path d="M20 11v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8"/><path d="M7.5 7a1 1 0 0 1 0-5A4.8 8 0 0 1 12 7a4.8 8 0 0 1 4.5-5 1 1 0 0 1 0 5"/><rect x="3" y="7" width="18" height="4" rx="1"/></symbol><symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol><symbol id="i-cloud" viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></symbol><symbol id="i-archive" viewBox="0 0 24 24"><rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></symbol><symbol id="i-award" viewBox="0 0 24 24"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol><symbol id="i-credit-card" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/><path d="M6 14h2"/></symbol><symbol id="i-scan-line" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></symbol><symbol id="i-file-input" viewBox="0 0 24 24"><path d="M4 11V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.706.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-1"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M2 15h10"/><path d="m9 18 3-3-3-3"/></symbol><symbol id="i-bell" viewBox="0 0 24 24"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></symbol><symbol id="i-user" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol><symbol id="i-lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol><symbol id="i-timer" viewBox="0 0 24 24"><line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/></symbol><symbol id="i-receipt" viewBox="0 0 24 24"><path d="M12 17V7"/><path d="M16 8h-6a2 2 0 0 0 0 4h4a2 2 0 0 1 0 4H8"/><path d="M4 3a1 1 0 0 1 1-1 1.3 1.3 0 0 1 .7.2l.933.6a1.3 1.3 0 0 0 1.4 0l.934-.6a1.3 1.3 0 0 1 1.4 0l.933.6a1.3 1.3 0 0 0 1.4 0l.933-.6a1.3 1.3 0 0 1 1.4 0l.934.6a1.3 1.3 0 0 0 1.4 0l.933-.6A1.3 1.3 0 0 1 19 2a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1 1.3 1.3 0 0 1-.7-.2l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.934.6a1.3 1.3 0 0 1-1.4 0l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-1.4 0l-.934-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-.7.2 1 1 0 0 1-1-1z"/></symbol><symbol id="i-party-popper" viewBox="0 0 24 24"><path d="M5.8 11.3 2 22l10.7-3.79"/><path d="M4 3h.01"/><path d="M22 8h.01"/><path d="M15 2h.01"/><path d="M22 20h.01"/><path d="m22 2-2.24.75a2.9 2.9 0 0 0-1.96 3.12c.1.86-.57 1.63-1.45 1.63h-.38c-.86 0-1.6.6-1.76 1.44L14 10"/><path d="m22 13-.82-.33c-.86-.34-1.82.2-1.98 1.11c-.11.7-.72 1.22-1.43 1.22H17"/><path d="m11 2 .33.82c.34.86-.2 1.82-1.11 1.98C9.52 4.9 9 5.52 9 6.23V7"/><path d="M11 13c1.93 1.93 2.83 4.17 2 5-.83.83-3.07-.07-5-2-1.93-1.93-2.83-4.17-2-5 .83-.83 3.07.07 5 2Z"/></symbol><symbol id="i-repeat" viewBox="0 0 24 24"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></symbol><symbol id="i-user-plus" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></symbol><symbol id="i-house" viewBox="0 0 24 24"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol><symbol id="i-layout-grid" viewBox="0 0 24 24"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></symbol><symbol id="i-circle-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></symbol><symbol id="i-contact" viewBox="0 0 24 24"><path d="M16 2v2"/><path d="M7 21v-2a2 2 0 012-2h6a2 2 0 012 2v2"/><path d="M8 2v2"/><circle cx="12" cy="10" r="3"/><rect x="3" y="3" width="18" height="18" rx="2"/></symbol><symbol id="i-baby" viewBox="0 0 24 24"><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M15 12h.01"/><path d="M19.38 6.813A9 9 0 0 1 20.8 10.2a2 2 0 0 1 0 3.6 9 9 0 0 1-17.6 0 2 2 0 0 1 0-3.6A9 9 0 0 1 12 3c2 0 3.5 1.1 3.5 2.5s-.9 2.5-2 2.5c-.8 0-1.5-.4-1.5-1"/><path d="M9 12h.01"/></symbol><symbol id="i-store" viewBox="0 0 24 24"><path d="M15 21v-5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v5"/><path d="M17.774 10.31a1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.451 0 1.12 1.12 0 0 0-1.548 0 2.5 2.5 0 0 1-3.452 0 1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.77-3.248l2.889-4.184A2 2 0 0 1 7 2h10a2 2 0 0 1 1.653.873l2.895 4.192a2.5 2.5 0 0 1-3.774 3.244"/><path d="M4 10.95V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8.05"/></symbol><symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></symbol><symbol id="i-monitor" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></symbol><symbol id="i-clipboard-list" viewBox="0 0 24 24"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></symbol><symbol id="i-phone" viewBox="0 0 24 24"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/></symbol></defs></svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><symbol id="i-door-open" viewBox="0 0 24 24"><path d="M10 21H2"/><path d="M10 3H7a2 2 0 00-2 2v16"/><path d="M14 12h.01"/><path d="M19 21V5a2 2 0 00-1.675-1.974l-6.163-1.013A1 1 0 0010 3v18a1 1 0 001.124.992z"/><path d="M22 21h-3"/></symbol><symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></symbol><symbol id="i-coffee" viewBox="0 0 24 24"><path d="M10 2v2"/><path d="M14 2v2"/><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/><path d="M6 2v2"/></symbol><symbol id="i-calendar-days" viewBox="0 0 24 24"><path d="M8 2v3"/><path d="M16 2v3"/><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M8 13h.01"/><path d="M12 13h.01"/><path d="M16 13h.01"/><path d="M8 17h.01"/><path d="M12 17h.01"/><path d="M16 17h.01"/></symbol><symbol id="i-ticket" viewBox="0 0 24 24"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/></symbol><symbol id="i-palette" viewBox="0 0 24 24"><path d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"/><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/></symbol><symbol id="i-star" viewBox="0 0 24 24"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></symbol><symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></symbol><symbol id="i-chart-column" viewBox="0 0 24 24"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></symbol><symbol id="i-clipboard-check" viewBox="0 0 24 24"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></symbol><symbol id="i-wallet" viewBox="0 0 24 24"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></symbol><symbol id="i-graduation-cap" viewBox="0 0 24 24"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></symbol><symbol id="i-message-circle" viewBox="0 0 24 24"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/></symbol><symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol><symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></symbol><symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></symbol><symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol><symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol><symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></symbol><symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol><symbol id="i-cake" viewBox="0 0 24 24"><path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8"/><path d="M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2.5 2 4 2 2-1 2-1"/><path d="M2 21h20"/><path d="M7 8v3"/><path d="M12 8v3"/><path d="M17 8v3"/><path d="M7 4h.01"/><path d="M12 4h.01"/><path d="M17 4h.01"/></symbol><symbol id="i-gift" viewBox="0 0 24 24"><path d="M12 7v14"/><path d="M20 11v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8"/><path d="M7.5 7a1 1 0 0 1 0-5A4.8 8 0 0 1 12 7a4.8 8 0 0 1 4.5-5 1 1 0 0 1 0 5"/><rect x="3" y="7" width="18" height="4" rx="1"/></symbol><symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol><symbol id="i-cloud" viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></symbol><symbol id="i-archive" viewBox="0 0 24 24"><rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></symbol><symbol id="i-award" viewBox="0 0 24 24"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol><symbol id="i-credit-card" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/><path d="M6 14h2"/></symbol><symbol id="i-scan-line" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></symbol><symbol id="i-file-input" viewBox="0 0 24 24"><path d="M4 11V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.706.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-1"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M2 15h10"/><path d="m9 18 3-3-3-3"/></symbol><symbol id="i-bell" viewBox="0 0 24 24"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></symbol><symbol id="i-user" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol><symbol id="i-lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol><symbol id="i-timer" viewBox="0 0 24 24"><line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/></symbol><symbol id="i-receipt" viewBox="0 0 24 24"><path d="M12 17V7"/><path d="M16 8h-6a2 2 0 0 0 0 4h4a2 2 0 0 1 0 4H8"/><path d="M4 3a1 1 0 0 1 1-1 1.3 1.3 0 0 1 .7.2l.933.6a1.3 1.3 0 0 0 1.4 0l.934-.6a1.3 1.3 0 0 1 1.4 0l.933.6a1.3 1.3 0 0 0 1.4 0l.933-.6a1.3 1.3 0 0 1 1.4 0l.934.6a1.3 1.3 0 0 0 1.4 0l.933-.6A1.3 1.3 0 0 1 19 2a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1 1.3 1.3 0 0 1-.7-.2l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.934.6a1.3 1.3 0 0 1-1.4 0l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-1.4 0l-.934-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-.7.2 1 1 0 0 1-1-1z"/></symbol><symbol id="i-party-popper" viewBox="0 0 24 24"><path d="M5.8 11.3 2 22l10.7-3.79"/><path d="M4 3h.01"/><path d="M22 8h.01"/><path d="M15 2h.01"/><path d="M22 20h.01"/><path d="m22 2-2.24.75a2.9 2.9 0 0 0-1.96 3.12c.1.86-.57 1.63-1.45 1.63h-.38c-.86 0-1.6.6-1.76 1.44L14 10"/><path d="m22 13-.82-.33c-.86-.34-1.82.2-1.98 1.11c-.11.7-.72 1.22-1.43 1.22H17"/><path d="m11 2 .33.82c.34.86-.2 1.82-1.11 1.98C9.52 4.9 9 5.52 9 6.23V7"/><path d="M11 13c1.93 1.93 2.83 4.17 2 5-.83.83-3.07-.07-5-2-1.93-1.93-2.83-4.17-2-5 .83-.83 3.07.07 5 2Z"/></symbol><symbol id="i-repeat" viewBox="0 0 24 24"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></symbol><symbol id="i-user-plus" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></symbol><symbol id="i-house" viewBox="0 0 24 24"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol><symbol id="i-layout-grid" viewBox="0 0 24 24"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></symbol><symbol id="i-circle-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></symbol><symbol id="i-contact" viewBox="0 0 24 24"><path d="M16 2v2"/><path d="M7 21v-2a2 2 0 012-2h6a2 2 0 012 2v2"/><path d="M8 2v2"/><circle cx="12" cy="10" r="3"/><rect x="3" y="3" width="18" height="18" rx="2"/></symbol><symbol id="i-baby" viewBox="0 0 24 24"><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M15 12h.01"/><path d="M19.38 6.813A9 9 0 0 1 20.8 10.2a2 2 0 0 1 0 3.6 9 9 0 0 1-17.6 0 2 2 0 0 1 0-3.6A9 9 0 0 1 12 3c2 0 3.5 1.1 3.5 2.5s-.9 2.5-2 2.5c-.8 0-1.5-.4-1.5-1"/><path d="M9 12h.01"/></symbol><symbol id="i-store" viewBox="0 0 24 24"><path d="M15 21v-5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v5"/><path d="M17.774 10.31a1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.451 0 1.12 1.12 0 0 0-1.548 0 2.5 2.5 0 0 1-3.452 0 1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.77-3.248l2.889-4.184A2 2 0 0 1 7 2h10a2 2 0 0 1 1.653.873l2.895 4.192a2.5 2.5 0 0 1-3.774 3.244"/><path d="M4 10.95V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8.05"/></symbol><symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></symbol><symbol id="i-monitor" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></symbol><symbol id="i-clipboard-list" viewBox="0 0 24 24"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></symbol><symbol id="i-phone" viewBox="0 0 24 24"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/></symbol></defs></svg>
 <a class="atla" href="#icerik">İçeriğe geç</a>
 
 <header class="ust">
@@ -326,32 +388,31 @@ html.tur-park .kart[data-k="park"] h3 .rozet,html.tur-atolye .kart[data-k="atoly
     </div>
     <div class="medya">
       <div data-tur="park">
-        <div class="foto kutu"><picture><source type="image/webp" srcset="assets/foto/acilis-park-640.webp 640w, assets/foto/acilis-park-1024.webp 1024w, assets/foto/acilis-park-1600.webp 1600w, assets/foto/acilis-park-2000.webp 2000w" sizes="(min-width:1200px) 500px, (min-width:1024px) 37vw, (min-width:720px) 66vw, 100vw"><img src="assets/foto/acilis-park-1024.jpg" srcset="assets/foto/acilis-park-640.jpg 640w, assets/foto/acilis-park-1024.jpg 1024w, assets/foto/acilis-park-1600.jpg 1600w" sizes="(min-width:1200px) 500px, (min-width:1024px) 37vw, (min-width:720px) 66vw, 100vw" width="1600" height="1000" alt="Kaydıraklar ve top havuzu olan renkli bir oyun alanı" loading="lazy" decoding="async"></picture></div>
-        <div class="on-ekran on-masa" aria-hidden="true"><div class="kirpma"><picture class="scr"><source media="(prefers-color-scheme: dark)" srcset="assets/ekran/kirpma-park-masaustu-744-koyu.webp 744w, assets/ekran/kirpma-park-masaustu-1488-koyu.webp 1488w" sizes="(min-width:1200px) 624px, (min-width:1024px) 46vw, 86vw"><img src="assets/ekran/kirpma-park-masaustu-744-acik.webp" srcset="assets/ekran/kirpma-park-masaustu-744-acik.webp 744w, assets/ekran/kirpma-park-masaustu-1488-acik.webp 1488w" sizes="(min-width:1200px) 624px, (min-width:1024px) 46vw, 86vw" width="744" height="565" alt="" loading="lazy" decoding="async"></picture></div></div>
-        <div class="on-ekran on-tel" aria-hidden="true"><div class="kirpma"><picture class="scr"><source media="(prefers-color-scheme: dark)" srcset="assets/ekran/kirpma-park-telefon-382-koyu.webp 382w, assets/ekran/kirpma-park-telefon-764-koyu.webp 764w" sizes="320px"><img src="assets/ekran/kirpma-park-telefon-382-acik.webp" srcset="assets/ekran/kirpma-park-telefon-382-acik.webp 382w, assets/ekran/kirpma-park-telefon-764-acik.webp 764w" sizes="320px" width="382" height="583" alt="" loading="lazy" decoding="async"></picture></div></div>
+        <div class="on-ekran on-masa" aria-hidden="true"><div class="kirpma"><picture class="scr"><source media="(prefers-color-scheme: dark)" srcset="assets/ekran/kirpma-park-masaustu-744-koyu.webp 744w, assets/ekran/kirpma-park-masaustu-1488-koyu.webp 1488w" sizes="(min-width:1200px) 712px, (min-width:1024px) 61vw, (min-width:792px) 744px, calc(100vw - 48px)"><img src="assets/ekran/kirpma-park-masaustu-744-acik.webp" srcset="assets/ekran/kirpma-park-masaustu-744-acik.webp 744w, assets/ekran/kirpma-park-masaustu-1488-acik.webp 1488w" sizes="(min-width:1200px) 712px, (min-width:1024px) 61vw, (min-width:792px) 744px, calc(100vw - 48px)" width="744" height="565" alt="" loading="lazy" decoding="async"></picture></div></div>
+        <div class="on-ekran on-tel" aria-hidden="true"><div class="kirpma"><picture class="scr"><source media="(prefers-color-scheme: dark)" srcset="assets/ekran/kirpma-park-telefon-382-koyu.webp 382w, assets/ekran/kirpma-park-telefon-764-koyu.webp 764w" sizes="(min-width:414px) 382px, calc(100vw - 32px)"><img src="assets/ekran/kirpma-park-telefon-382-acik.webp" srcset="assets/ekran/kirpma-park-telefon-382-acik.webp 382w, assets/ekran/kirpma-park-telefon-764-acik.webp 764w" sizes="(min-width:414px) 382px, calc(100vw - 32px)" width="382" height="583" alt="" loading="lazy" decoding="async"></picture></div></div>
       </div>
       <div data-tur="atolye">
-        <div class="foto kutu"><picture><source type="image/webp" srcset="assets/foto/acilis-atolye-640.webp 640w, assets/foto/acilis-atolye-1024.webp 1024w, assets/foto/acilis-atolye-1600.webp 1600w, assets/foto/acilis-atolye-2000.webp 2000w" sizes="(min-width:1200px) 500px, (min-width:1024px) 37vw, (min-width:720px) 66vw, 100vw"><img src="assets/foto/acilis-atolye-1024.jpg" srcset="assets/foto/acilis-atolye-640.jpg 640w, assets/foto/acilis-atolye-1024.jpg 1024w, assets/foto/acilis-atolye-1600.jpg 1600w" sizes="(min-width:1200px) 500px, (min-width:1024px) 37vw, (min-width:720px) 66vw, 100vw" width="1600" height="1000" alt="Öğretmen ve öğrenci piyano başında, dersten bir an" loading="lazy" decoding="async"></picture></div>
-        <div class="on-ekran on-masa" aria-hidden="true"><div class="kirpma"><picture class="scr"><source media="(prefers-color-scheme: dark)" srcset="assets/ekran/kirpma-atolye-masaustu-744-koyu.webp 744w, assets/ekran/kirpma-atolye-masaustu-1488-koyu.webp 1488w" sizes="(min-width:1200px) 624px, (min-width:1024px) 46vw, 86vw"><img src="assets/ekran/kirpma-atolye-masaustu-744-acik.webp" srcset="assets/ekran/kirpma-atolye-masaustu-744-acik.webp 744w, assets/ekran/kirpma-atolye-masaustu-1488-acik.webp 1488w" sizes="(min-width:1200px) 624px, (min-width:1024px) 46vw, 86vw" width="744" height="565" alt="" loading="lazy" decoding="async"></picture></div></div>
-        <div class="on-ekran on-tel" aria-hidden="true"><div class="kirpma"><picture class="scr"><source media="(prefers-color-scheme: dark)" srcset="assets/ekran/kirpma-atolye-telefon-382-koyu.webp 382w, assets/ekran/kirpma-atolye-telefon-764-koyu.webp 764w" sizes="320px"><img src="assets/ekran/kirpma-atolye-telefon-382-acik.webp" srcset="assets/ekran/kirpma-atolye-telefon-382-acik.webp 382w, assets/ekran/kirpma-atolye-telefon-764-acik.webp 764w" sizes="320px" width="382" height="583" alt="" loading="lazy" decoding="async"></picture></div></div>
+        <div class="on-ekran on-masa" aria-hidden="true"><div class="kirpma"><picture class="scr"><source media="(prefers-color-scheme: dark)" srcset="assets/ekran/kirpma-atolye-masaustu-744-koyu.webp 744w, assets/ekran/kirpma-atolye-masaustu-1488-koyu.webp 1488w" sizes="(min-width:1200px) 712px, (min-width:1024px) 61vw, (min-width:792px) 744px, calc(100vw - 48px)"><img src="assets/ekran/kirpma-atolye-masaustu-744-acik.webp" srcset="assets/ekran/kirpma-atolye-masaustu-744-acik.webp 744w, assets/ekran/kirpma-atolye-masaustu-1488-acik.webp 1488w" sizes="(min-width:1200px) 712px, (min-width:1024px) 61vw, (min-width:792px) 744px, calc(100vw - 48px)" width="744" height="565" alt="" loading="lazy" decoding="async"></picture></div></div>
+        <div class="on-ekran on-tel" aria-hidden="true"><div class="kirpma"><picture class="scr"><source media="(prefers-color-scheme: dark)" srcset="assets/ekran/kirpma-atolye-telefon-382-koyu.webp 382w, assets/ekran/kirpma-atolye-telefon-764-koyu.webp 764w" sizes="(min-width:414px) 382px, calc(100vw - 32px)"><img src="assets/ekran/kirpma-atolye-telefon-382-acik.webp" srcset="assets/ekran/kirpma-atolye-telefon-382-acik.webp 382w, assets/ekran/kirpma-atolye-telefon-764-acik.webp 764w" sizes="(min-width:414px) 382px, calc(100vw - 32px)" width="382" height="583" alt="" loading="lazy" decoding="async"></picture></div></div>
       </div>
       <div data-tur="ikisi">
-        <div class="foto kutu"><picture><source type="image/webp" srcset="assets/foto/acilis-ikisi-640.webp 640w, assets/foto/acilis-ikisi-1024.webp 1024w, assets/foto/acilis-ikisi-1600.webp 1600w, assets/foto/acilis-ikisi-2000.webp 2000w" sizes="(min-width:1200px) 500px, (min-width:1024px) 37vw, (min-width:720px) 66vw, 100vw"><img src="assets/foto/acilis-ikisi-1024.jpg" srcset="assets/foto/acilis-ikisi-640.jpg 640w, assets/foto/acilis-ikisi-1024.jpg 1024w, assets/foto/acilis-ikisi-1600.jpg 1600w" sizes="(min-width:1200px) 500px, (min-width:1024px) 37vw, (min-width:720px) 66vw, 100vw" width="1600" height="1000" alt="Solda oyun parkında kaydırak, sağda atölye rafında boyalar ve kalemler" loading="lazy" decoding="async"></picture></div>
-        <div class="on-ekran on-masa" aria-hidden="true"><div class="kirpma"><picture class="scr"><source media="(prefers-color-scheme: dark)" srcset="assets/ekran/kirpma-ikisi-masaustu-744-koyu.webp 744w, assets/ekran/kirpma-ikisi-masaustu-1488-koyu.webp 1488w" sizes="(min-width:1200px) 624px, (min-width:1024px) 46vw, 86vw"><img src="assets/ekran/kirpma-ikisi-masaustu-744-acik.webp" srcset="assets/ekran/kirpma-ikisi-masaustu-744-acik.webp 744w, assets/ekran/kirpma-ikisi-masaustu-1488-acik.webp 1488w" sizes="(min-width:1200px) 624px, (min-width:1024px) 46vw, 86vw" width="744" height="565" alt="" loading="lazy" decoding="async"></picture></div></div>
-        <div class="on-ekran on-tel" aria-hidden="true"><div class="kirpma"><picture class="scr"><source media="(prefers-color-scheme: dark)" srcset="assets/ekran/kirpma-ikisi-telefon-382-koyu.webp 382w, assets/ekran/kirpma-ikisi-telefon-764-koyu.webp 764w" sizes="320px"><img src="assets/ekran/kirpma-ikisi-telefon-382-acik.webp" srcset="assets/ekran/kirpma-ikisi-telefon-382-acik.webp 382w, assets/ekran/kirpma-ikisi-telefon-764-acik.webp 764w" sizes="320px" width="382" height="583" alt="" loading="lazy" decoding="async"></picture></div></div>
+        <div class="on-ekran on-masa" aria-hidden="true"><div class="kirpma"><picture class="scr"><source media="(prefers-color-scheme: dark)" srcset="assets/ekran/kirpma-ikisi-masaustu-744-koyu.webp 744w, assets/ekran/kirpma-ikisi-masaustu-1488-koyu.webp 1488w" sizes="(min-width:1200px) 712px, (min-width:1024px) 61vw, (min-width:792px) 744px, calc(100vw - 48px)"><img src="assets/ekran/kirpma-ikisi-masaustu-744-acik.webp" srcset="assets/ekran/kirpma-ikisi-masaustu-744-acik.webp 744w, assets/ekran/kirpma-ikisi-masaustu-1488-acik.webp 1488w" sizes="(min-width:1200px) 712px, (min-width:1024px) 61vw, (min-width:792px) 744px, calc(100vw - 48px)" width="744" height="565" alt="" loading="lazy" decoding="async"></picture></div></div>
+        <div class="on-ekran on-tel" aria-hidden="true"><div class="kirpma"><picture class="scr"><source media="(prefers-color-scheme: dark)" srcset="assets/ekran/kirpma-ikisi-telefon-382-koyu.webp 382w, assets/ekran/kirpma-ikisi-telefon-764-koyu.webp 764w" sizes="(min-width:414px) 382px, calc(100vw - 32px)"><img src="assets/ekran/kirpma-ikisi-telefon-382-acik.webp" srcset="assets/ekran/kirpma-ikisi-telefon-382-acik.webp 382w, assets/ekran/kirpma-ikisi-telefon-764-acik.webp 764w" sizes="(min-width:414px) 382px, calc(100vw - 32px)" width="382" height="583" alt="" loading="lazy" decoding="async"></picture></div></div>
       </div>
     </div>
   </div>
 </section>
+<div class="serit" aria-hidden="true"><picture><source media="(min-width:720px)" type="image/webp" srcset="assets/foto/serit-toplar-genis-1600.webp 1600w, assets/foto/serit-toplar-genis-2400.webp 2400w" sizes="100vw"><source media="(min-width:720px)" srcset="assets/foto/serit-toplar-genis-1600.jpg"><source type="image/webp" srcset="assets/foto/park-toplar-serit-480.webp 480w, assets/foto/park-toplar-serit-960.webp 960w" sizes="100vw"><img src="assets/foto/park-toplar-serit-960.jpg" srcset="assets/foto/park-toplar-serit-480.jpg 480w, assets/foto/park-toplar-serit-960.jpg 960w" sizes="100vw" width="960" height="320" alt="" fetchpriority="low" decoding="async"></picture></div>
 <script>
-/* Seçili türün açılış fotoğrafı hemen yüklensin (diğerleri gizli ve tembel kalır) */
+/* Seçili türün açılış ekranı (genişliğe göre bilgisayar ya da telefon kırpması) hemen yüklensin; diğerleri gizli ve tembel kalır */
 (function(){ var t=(document.documentElement.className.match(/tur-(\w+)/)||[])[1]||'ikisi';
-  var i=document.querySelectorAll('.acilis [data-tur~="'+t+'"] .foto img');
+  var g=window.matchMedia&&window.matchMedia('(min-width:720px)').matches;
+  var i=document.querySelectorAll('.acilis [data-tur~="'+t+'"] '+(g?'.on-masa':'.on-tel')+' img');
   for(var k=0;k<i.length;k++){ i[k].setAttribute('fetchpriority','high'); i[k].loading='eager'; } })();
 </script>
 
 <!-- 2. ÇÖZÜMLER -->
-<section class="bolum alt" id="cozumler" aria-labelledby="cozumler-b">
+<section class="bolum alt rk-genel" id="cozumler" aria-labelledby="cozumler-b">
   <div class="wrap">
     <div class="ust-yazi">
       <span class="kucuk-baslik">Çözümlerimiz</span>
@@ -359,7 +420,7 @@ html.tur-park .kart[data-k="park"] h3 .rozet,html.tur-atolye .kart[data-k="atoly
       <p>Uygulamada işletme türünüzü seçersiniz; menü ve ana ekran işinize göre düzenlenir. Hiçbir bölüm kaybolmaz, az kullandıklarınız bir kenarda durur.</p>
     </div>
     <div class="kartlar">
-      <article class="kart" data-k="park">
+      <article class="kart rk-park" data-k="park">
         <div class="foto"><picture><source type="image/webp" srcset="assets/foto/kart-park-400.webp 400w, assets/foto/kart-park-800.webp 800w" sizes="(min-width:1024px) 380px, (min-width:720px) 45vw, 100vw"><img src="assets/foto/kart-park-400.jpg" srcset="assets/foto/kart-park-400.jpg 400w, assets/foto/kart-park-800.jpg 800w" sizes="(min-width:1024px) 380px, (min-width:720px) 45vw, 100vw" width="800" height="600" alt="Kaydıraktan gülerek kayan bir çocuk" loading="lazy" decoding="async"></picture></div>
         <div class="kart-ic">
           <h3>Oyun parkı için <span class="rozet r-sec">Seçiminiz</span></h3>
@@ -379,7 +440,7 @@ html.tur-park .kart[data-k="park"] h3 .rozet,html.tur-atolye .kart[data-k="atoly
           </div>
         </div>
       </article>
-      <article class="kart" data-k="atolye">
+      <article class="kart rk-atolye" data-k="atolye">
         <div class="foto"><picture><source type="image/webp" srcset="assets/foto/kart-atolye-400.webp 400w, assets/foto/kart-atolye-800.webp 800w" sizes="(min-width:1024px) 380px, (min-width:720px) 45vw, 100vw"><img src="assets/foto/kart-atolye-400.jpg" srcset="assets/foto/kart-atolye-400.jpg 400w, assets/foto/kart-atolye-800.jpg 800w" sizes="(min-width:1024px) 380px, (min-width:720px) 45vw, 100vw" width="800" height="600" alt="Tuğla duvarlı atölyede masada resim yapan bir kız çocuğu" loading="lazy" decoding="async"></picture></div>
         <div class="kart-ic">
           <h3>Atölye ve sınıf için <span class="rozet r-sec">Seçiminiz</span></h3>
@@ -399,7 +460,7 @@ html.tur-park .kart[data-k="park"] h3 .rozet,html.tur-atolye .kart[data-k="atoly
           </div>
         </div>
       </article>
-      <article class="kart" data-k="ikisi">
+      <article class="kart rk-genel" data-k="ikisi">
         <div class="foto"><picture><source type="image/webp" srcset="assets/foto/kart-ikisi-400.webp 400w, assets/foto/kart-ikisi-800.webp 800w" sizes="(min-width:1024px) 380px, (min-width:720px) 45vw, 100vw"><img src="assets/foto/kart-ikisi-400.jpg" srcset="assets/foto/kart-ikisi-400.jpg 400w, assets/foto/kart-ikisi-800.jpg 800w" sizes="(min-width:1024px) 380px, (min-width:720px) 45vw, 100vw" width="800" height="600" alt="Turuncu duvarlı, sarı merdivenli ve kaydıraklı modern bir oyun alanı" loading="lazy" decoding="async"></picture></div>
         <div class="kart-ic">
           <h3>İkisi birden <span class="rozet r-sec">Seçiminiz</span></h3>
@@ -424,15 +485,18 @@ html.tur-park .kart[data-k="park"] h3 .rozet,html.tur-atolye .kart[data-k="atoly
 </section>
 
 <!-- 3. ÖNE ÇIKAN ÖZELLİKLER -->
-<section class="bolum" id="ozellikler" aria-labelledby="ozellikler-b">
+<section class="bolum zemin rk-genel" id="ozellikler" aria-labelledby="ozellikler-b">
   <div class="wrap">
     <div class="ust-yazi">
       <span class="kucuk-baslik">Öne çıkan özellikler</span>
       <h2 id="ozellikler-b">Bilgisayarda, tablette ve telefonda aynı uygulama</h2>
       <p>Ekranlar DigiPark 0.4.0'dan, örnek verilerle.</p>
     </div>
+    <div class="sekme-satir">
     <div class="sekmeler" role="tablist" aria-label="Ekranlar">
       <button type="button" role="tab" id="s-bugun" aria-controls="p-bugun" aria-selected="true">Bugün</button><button type="button" role="tab" id="s-iceride" aria-controls="p-iceride" aria-selected="false" tabindex="-1">İçeride</button><button type="button" role="tab" id="s-dersler" aria-controls="p-dersler" aria-selected="false" tabindex="-1">Bugünkü dersler</button><button type="button" role="tab" id="s-odemeler" aria-controls="p-odemeler" aria-selected="false" tabindex="-1">Ödemeler</button><button type="button" role="tab" id="s-raporlar" aria-controls="p-raporlar" aria-selected="false" tabindex="-1">Raporlar</button><button type="button" role="tab" id="s-belge" aria-controls="p-belge" aria-selected="false" tabindex="-1">Katılım belgesi</button>
+    </div>
+    <a class="tum-bag" data-ozellik href="ozellikler.html?tur=ikisi">Bütün özellikler<svg class="ic" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
     </div>
     <div role="tabpanel" id="p-bugun" aria-labelledby="s-bugun" tabindex="0">
       <p class="panel-yazi">Bugün satırı günün işlerini bir arada gösterir: yoklaması alınmayan dersler, geciken ödemeler, rezervasyonlar, doğum günleri ve süresi dolmak üzere olan çocuklar. Altında yeni giriş formu.</p>
@@ -459,11 +523,12 @@ html.tur-park .kart[data-k="park"] h3 .rozet,html.tur-atolye .kart[data-k="atoly
       <div class="cihazlar"><div class="c-masa"><div class="fr fr-masa"><div class="scr-kutu"><picture class="scr"><source media="(prefers-color-scheme: dark)" srcset="assets/ekran/belge-masaustu-720-koyu.webp 720w, assets/ekran/belge-masaustu-koyu.webp 1440w" sizes="(min-width:1024px) 960px, (min-width:768px) 540px, 84vw"><img src="assets/ekran/belge-masaustu-720-acik.webp" srcset="assets/ekran/belge-masaustu-720-acik.webp 720w, assets/ekran/belge-masaustu-acik.webp 1440w" sizes="(min-width:1024px) 960px, (min-width:768px) 540px, 84vw" width="1440" height="900" alt="DigiPark Katılım belgesi penceresi, bilgisayar görünümü" loading="lazy" decoding="async"></picture></div></div><span class="c-ad">Bilgisayar</span></div><div class="c-tab"><button type="button" class="tema-btn" aria-pressed="false"><svg class="ic" aria-hidden="true"><use href="#i-moon"/></svg>Koyu tema</button><div class="fr fr-tab"><div class="scr-kutu"><picture class="scr"><source media="(prefers-color-scheme: dark)" srcset="assets/ekran/belge-tablet-dikey-768-koyu.webp 768w, assets/ekran/belge-tablet-dikey-koyu.webp 1536w" sizes="(min-width:1024px) 25vw, (min-width:768px) 270px, 64vw"><img src="assets/ekran/belge-tablet-dikey-768-acik.webp" srcset="assets/ekran/belge-tablet-dikey-768-acik.webp 768w, assets/ekran/belge-tablet-dikey-acik.webp 1536w" sizes="(min-width:1024px) 25vw, (min-width:768px) 270px, 64vw" width="768" height="1024" alt="DigiPark Katılım belgesi penceresi, tablet görünümü" loading="lazy" decoding="async"></picture></div></div><span class="c-ad">Tablet</span></div><div class="c-tel"><div class="fr fr-tel"><div class="scr-kutu"><picture class="scr"><source media="(prefers-color-scheme: dark)" srcset="assets/ekran/belge-telefon-390-koyu.webp 390w, assets/ekran/belge-telefon-koyu.webp 780w" sizes="(min-width:1024px) 15vw, (min-width:768px) 150px, 56vw"><img src="assets/ekran/belge-telefon-390-acik.webp" srcset="assets/ekran/belge-telefon-390-acik.webp 390w, assets/ekran/belge-telefon-acik.webp 780w" sizes="(min-width:1024px) 15vw, (min-width:768px) 150px, 56vw" width="390" height="844" alt="DigiPark Katılım belgesi penceresi, telefon görünümü" loading="lazy" decoding="async"></picture></div></div><span class="c-ad">Telefon</span></div></div>
     </div>
     <p class="kaydir-ipucu"><span class="ip-dar">Tablet ve bilgisayar görünümü için yana kaydırın.</span><span class="ip-genis">Tablet ve telefon görünümü için yana kaydırın.</span></p>
+    <p class="tum-satir">Burada 6 ekran var; <a data-ozellik href="ozellikler.html?tur=ikisi">bütün özellikleri tek sayfada görün<svg class="ic" aria-hidden="true"><use href="#i-arrow-right"/></svg></a></p>
   </div>
 </section>
 
 <!-- 4. OYUN PARKLARI İÇİN -->
-<section class="bolum alt" id="oyun-parklari" aria-labelledby="park-b">
+<section class="bolum zemin rk-park" id="oyun-parklari" aria-labelledby="park-b">
   <div class="wrap iki">
     <div class="kolaj">
       <div class="foto"><picture><source type="image/webp" srcset="assets/foto/park-top-havuzu-480.webp 480w, assets/foto/park-top-havuzu-960.webp 960w, assets/foto/park-top-havuzu-1440.webp 1440w" sizes="(min-width:1024px) 560px, 100vw"><img src="assets/foto/park-top-havuzu-960.jpg" srcset="assets/foto/park-top-havuzu-480.jpg 480w, assets/foto/park-top-havuzu-960.jpg 960w, assets/foto/park-top-havuzu-1440.jpg 1440w" sizes="(min-width:1024px) 560px, 100vw" width="1440" height="1080" alt="Yukarıdan çekilmiş, kum alanı ve top havuzu olan büyük bir oyun parkı" loading="lazy" decoding="async"></picture></div>
@@ -473,11 +538,11 @@ html.tur-park .kart[data-k="park"] h3 .rozet,html.tur-atolye .kart[data-k="atoly
       <span class="kucuk-baslik">Oyun parkları için</span>
       <h2 id="park-b">Kapıda hızlı, kasada net</h2>
       <p>Çocuğun ve velinin adını yazın, ücret tipini seçin, girişi kaydedin; süre kendiliğinden işler. Süresi dolmak üzere olan çocuk Bugün satırında görünür, veliye tek dokunuşla haber verirsiniz.</p>
-      <div class="ozellik"><span class="ikon ik-mavi"><svg class="ic" aria-hidden="true"><use href="#i-timer"/></svg></span><div><b>Giriş ve süre</b><span>Dakika, saat, yarım saat ya da sabit ücret; saat paketinden ve üyelikten düşme.</span></div></div>
-      <div class="ozellik"><span class="ikon ik-sari"><svg class="ic" aria-hidden="true"><use href="#i-coffee"/></svg></span><div><b>Kafe ve kasa</b><span>Açık adisyonlar, kafe satışı, nakit ve kart tahsilatları; gün sonunda kasa raporu.</span></div></div>
-      <div class="ozellik"><span class="ikon ik-turuncu"><svg class="ic" aria-hidden="true"><use href="#i-cake"/></svg></span><div><b>Doğum günü ve etkinlik</b><span>Rezervasyon takvimi, kapora ve tahsilat; önümüzdeki 14 günde doğum günü olan çocuklar listelenir.</span></div></div>
-      <div class="ozellik"><span class="ikon ik-yesil"><svg class="ic" aria-hidden="true"><use href="#i-message-circle"/></svg></span><div><b>Veliyle iletişim</b><span>Hazır WhatsApp mesajları; süre dolmadan veliye hatırlatma.</span></div></div>
-      <div class="ozellik"><span class="ikon ik-teal"><svg class="ic" aria-hidden="true"><use href="#i-clipboard-list"/></svg></span><div><b>Onam ve alerji</b><span>Onam formu ve alerji notu girişte alınır, içerideki çocuklar listesinde görünür.</span></div></div>
+      <div class="ozellik"><span class="ikon"><svg class="ic" aria-hidden="true"><use href="#i-timer"/></svg></span><div><b>Giriş ve süre</b><span>Dakika, saat, yarım saat ya da sabit ücret; saat paketinden ve üyelikten düşme.</span></div></div>
+      <div class="ozellik"><span class="ikon"><svg class="ic" aria-hidden="true"><use href="#i-coffee"/></svg></span><div><b>Kafe ve kasa</b><span>Açık adisyonlar, kafe satışı, nakit ve kart tahsilatları; gün sonunda kasa raporu.</span></div></div>
+      <div class="ozellik"><span class="ikon"><svg class="ic" aria-hidden="true"><use href="#i-cake"/></svg></span><div><b>Doğum günü ve etkinlik</b><span>Rezervasyon takvimi, kapora ve tahsilat; önümüzdeki 14 günde doğum günü olan çocuklar listelenir.</span></div></div>
+      <div class="ozellik"><span class="ikon"><svg class="ic" aria-hidden="true"><use href="#i-message-circle"/></svg></span><div><b>Veliyle iletişim</b><span>Hazır WhatsApp mesajları; süre dolmadan veliye hatırlatma.</span></div></div>
+      <div class="ozellik"><span class="ikon"><svg class="ic" aria-hidden="true"><use href="#i-clipboard-list"/></svg></span><div><b>Onam ve alerji</b><span>Onam formu ve alerji notu girişte alınır, içerideki çocuklar listesinde görünür.</span></div></div>
       <div class="btns son">
         <a class="btn btn-p" href="https://wa.me/905075383119?text=Merhaba%2C%20oyun%20park%C4%B1m%20i%C3%A7in%20DigiPark'%C4%B1%20tan%C4%B1mak%20istiyorum.%20Uygun%20bir%20zamanda%20k%C4%B1sa%20bir%20tan%C4%B1t%C4%B1m%20yapabilir%20misiniz%3F" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-message-circle"/></svg>Size tanıtalım</a>
         <a class="btn btn-s" href="demo/?tur=park"><svg class="ic" aria-hidden="true"><use href="#i-monitor"/></svg>Demoda görün</a>
@@ -487,7 +552,7 @@ html.tur-park .kart[data-k="park"] h3 .rozet,html.tur-atolye .kart[data-k="atoly
 </section>
 
 <!-- 5. ATÖLYELER VE KURSLAR İÇİN -->
-<section class="bolum" id="atolyeler" aria-labelledby="atolye-b">
+<section class="bolum zemin rk-atolye" id="atolyeler" aria-labelledby="atolye-b">
   <div class="wrap iki ters">
     <div class="kolaj">
       <div class="foto"><picture><source type="image/webp" srcset="assets/foto/atolye-sinif-480.webp 480w, assets/foto/atolye-sinif-960.webp 960w, assets/foto/atolye-sinif-1440.webp 1440w" sizes="(min-width:1024px) 560px, 100vw"><img src="assets/foto/atolye-sinif-960.jpg" srcset="assets/foto/atolye-sinif-480.jpg 480w, assets/foto/atolye-sinif-960.jpg 960w, assets/foto/atolye-sinif-1440.jpg 1440w" sizes="(min-width:1024px) 560px, 100vw" width="1440" height="1080" alt="Öğretmenle birlikte masa başında çalışan bir grup çocuk" loading="lazy" decoding="async"></picture></div>
@@ -497,12 +562,12 @@ html.tur-park .kart[data-k="park"] h3 .rozet,html.tur-atolye .kart[data-k="atoly
       <span class="kucuk-baslik">Atölyeler ve kurslar için</span>
       <h2 id="atolye-b">Ders günü düzenli, ödemeler takipte</h2>
       <p>Bugünkü dersler ekranı her dersin saatini, eğitmenini ve doluluğunu gösterir. Yoklamada her öğrenci tek dokunuşla işaretlenir; ders bitip yoklama alınmadıysa uyarı gelir.</p>
-      <div class="ozellik"><span class="ikon ik-yesil"><svg class="ic" aria-hidden="true"><use href="#i-clipboard-check"/></svg></span><div><b>Yoklama ve hatırlatma</b><span>Ders başlamadan ve yoklama alınmadığında bildirim; Android telefon ve tablette uygulama kapalıyken de.</span></div></div>
-      <div class="ozellik"><span class="ikon ik-turuncu"><svg class="ic" aria-hidden="true"><use href="#i-wallet"/></svg></span><div><b>Ödeme takibi</b><span>Geciken, bugün ödenecek ve yaklaşan ödemeler; veliye hazır hatırlatma mesajı. Ödeme hatırlatmaları yalnız patrona gelir.</span></div></div>
-      <div class="ozellik"><span class="ikon ik-mavi"><svg class="ic" aria-hidden="true"><use href="#i-bell"/></svg></span><div><b>Devamsızlık</b><span>Son iki derse gelmeyen öğrenciler Bugün satırında listelenir.</span></div></div>
-      <div class="ozellik"><span class="ikon ik-sari"><svg class="ic" aria-hidden="true"><use href="#i-award"/></svg></span><div><b>Dönem sonu belgesi</b><span>4 şablon, logonuz ve renkleriniz; katılım sayısı yoklamadan gelir.</span></div></div>
-      <div class="ozellik"><span class="ikon ik-teal"><svg class="ic" aria-hidden="true"><use href="#i-users"/></svg></span><div><b>Yetişkin ve ebeveyn + çocuk sınıfları</b><span>Çocuk sınıflarının yanında yetişkin dersleri ve ebeveynle birlikte katılınan dersler.</span></div></div>
-      <div class="ozellik"><span class="ikon ik-mavi"><svg class="ic" aria-hidden="true"><use href="#i-file-input"/></svg></span><div><b>Excel'den içe aktarma</b><span>Mevcut öğrenci listenizi Excel'den aktararak başlayın.</span></div></div>
+      <div class="ozellik"><span class="ikon"><svg class="ic" aria-hidden="true"><use href="#i-clipboard-check"/></svg></span><div><b>Yoklama ve hatırlatma</b><span>Ders başlamadan ve yoklama alınmadığında bildirim; Android telefon ve tablette uygulama kapalıyken de.</span></div></div>
+      <div class="ozellik"><span class="ikon"><svg class="ic" aria-hidden="true"><use href="#i-wallet"/></svg></span><div><b>Ödeme takibi</b><span>Geciken, bugün ödenecek ve yaklaşan ödemeler; veliye hazır hatırlatma mesajı. Ödeme hatırlatmaları yalnız patrona gelir.</span></div></div>
+      <div class="ozellik"><span class="ikon"><svg class="ic" aria-hidden="true"><use href="#i-bell"/></svg></span><div><b>Devamsızlık</b><span>Son iki derse gelmeyen öğrenciler Bugün satırında listelenir.</span></div></div>
+      <div class="ozellik"><span class="ikon"><svg class="ic" aria-hidden="true"><use href="#i-award"/></svg></span><div><b>Dönem sonu belgesi</b><span>4 şablon, logonuz ve renkleriniz; katılım sayısı yoklamadan gelir.</span></div></div>
+      <div class="ozellik"><span class="ikon"><svg class="ic" aria-hidden="true"><use href="#i-users"/></svg></span><div><b>Yetişkin ve ebeveyn + çocuk sınıfları</b><span>Çocuk sınıflarının yanında yetişkin dersleri ve ebeveynle birlikte katılınan dersler.</span></div></div>
+      <div class="ozellik"><span class="ikon"><svg class="ic" aria-hidden="true"><use href="#i-file-input"/></svg></span><div><b>Excel'den içe aktarma</b><span>Mevcut öğrenci listenizi Excel'den aktararak başlayın.</span></div></div>
       <div class="btns son">
         <a class="btn btn-p" href="https://wa.me/905075383119?text=Merhaba%2C%20at%C3%B6lye%20%2F%20kurs%20i%C5%9Fletmem%20i%C3%A7in%20DigiPark'%C4%B1%20tan%C4%B1mak%20istiyorum.%20Uygun%20bir%20zamanda%20k%C4%B1sa%20bir%20tan%C4%B1t%C4%B1m%20yapabilir%20misiniz%3F" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-message-circle"/></svg>Size tanıtalım</a>
         <a class="btn btn-s" href="demo/?tur=atolye"><svg class="ic" aria-hidden="true"><use href="#i-monitor"/></svg>Demoda görün</a>
@@ -512,7 +577,7 @@ html.tur-park .kart[data-k="park"] h3 .rozet,html.tur-atolye .kart[data-k="atoly
 </section>
 
 <!-- 6. EK HİZMETLER -->
-<section class="bolum alt" id="ek-hizmetler" aria-labelledby="ek-b">
+<section class="bolum alt rk-ek" id="ek-hizmetler" aria-labelledby="ek-b">
   <div class="wrap">
     <div class="ust-yazi">
       <span class="kucuk-baslik">Ek hizmetler</span>
@@ -564,7 +629,7 @@ html.tur-park .kart[data-k="park"] h3 .rozet,html.tur-atolye .kart[data-k="atoly
 </section>
 
 <!-- 7. SİZE ÖZEL YAZILIM -->
-<section class="bolum ozel" id="size-ozel" aria-labelledby="ozel-b">
+<section class="bolum ozel zemin rk-ozel" id="size-ozel" aria-labelledby="ozel-b">
   <div class="wrap">
     <div class="ozel-kart">
       <div class="foto"><picture><source type="image/webp" srcset="assets/foto/ozel-cizim-yatay-480.webp 480w, assets/foto/ozel-cizim-yatay-960.webp 960w, assets/foto/ozel-cizim-yatay-1440.webp 1440w" sizes="(min-width:1200px) 545px, (min-width:720px) 47vw, 100vw"><img src="assets/foto/ozel-cizim-yatay-480.jpg" srcset="assets/foto/ozel-cizim-yatay-480.jpg 480w, assets/foto/ozel-cizim-yatay-960.jpg 960w, assets/foto/ozel-cizim-yatay-1440.jpg 1440w" sizes="(min-width:1200px) 545px, (min-width:720px) 47vw, 100vw" width="1440" height="960" alt="Masada boyanmış bir çiçek çizimi ve renkli kalemler" loading="lazy" decoding="async"></picture></div>
@@ -581,7 +646,7 @@ html.tur-park .kart[data-k="park"] h3 .rozet,html.tur-atolye .kart[data-k="atoly
 </section>
 
 <!-- 8. DESTEK -->
-<section class="bolum alt destek" id="destek" aria-labelledby="destek-b">
+<section class="bolum alt destek rk-destek" id="destek" aria-labelledby="destek-b">
   <picture><source type="image/webp" srcset="assets/foto/destek-boya-480.webp 480w, assets/foto/destek-boya-960.webp 960w, assets/foto/destek-boya-1440.webp 1440w" sizes="100vw"><img class="arka" src="assets/foto/destek-boya-960.jpg" srcset="assets/foto/destek-boya-480.jpg 480w, assets/foto/destek-boya-960.jpg 960w, assets/foto/destek-boya-1440.jpg 1440w" sizes="100vw" width="1440" height="810" alt="" loading="lazy" decoding="async"></picture>
   <div class="wrap">
     <div class="destek-kart">
