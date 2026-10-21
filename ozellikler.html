@@ -1,0 +1,663 @@
+<!doctype html>
+<html lang="tr" class="tur-ikisi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bütün özellikler · DigiPark</title>
+<meta name="description" content="DigiPark 0.4.0'ın bütün özellikleri: giriş ve süre, kafe ve kasa, rezervasyon ve üyelik, atölye ve sınıflar, ödemeler, hatırlatmalar, katılım belgesi, raporlar, eşitleme ve yedek. 10 gün ücretsiz deneme.">
+<meta name="theme-color" content="#F6F9FB" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0F1A22" media="(prefers-color-scheme: dark)">
+<meta property="og:title" content="Bütün özellikler · DigiPark">
+<meta property="og:description" content="Oyun parkı ve atölye yönetim uygulaması DigiPark'ın bütün özellikleri. 10 gün ücretsiz deneme.">
+<meta property="og:image" content="https://digiparkapp.github.io/assets/foto/acilis-ikisi-1024.jpg">
+<meta property="og:locale" content="tr_TR">
+<link rel="icon" href="assets/logo/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/logo/apple-touch-icon.png">
+<link rel="preload" href="assets/fonts/fredoka-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/albert-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+<script>
+/* Ana sayfayla aynı: ?tur= > son seçim (localStorage) > İkisi birden; tema: kayıtlı seçim > sistem */
+(function(){
+  var d=document.documentElement, t=null, q=null;
+  function norm(v){ v=String(v||'').toLowerCase().replace(/̇/g,'').replace(/ı/g,'i').replace(/ö/g,'o');
+    return v==='park'||v==='atolye'||v==='ikisi'?v:null; }
+  try{ q=new URLSearchParams(location.search).get('tur'); }catch(e){}
+  t=norm(q);
+  if(!t){ try{ t=norm(localStorage.getItem('dpSiteTur')); }catch(e){} }
+  d.className=d.className.replace(/\btur-\w+/,'tur-'+(t||'ikisi'));
+  try{ var m=localStorage.getItem('dpSiteTema'); if(m==='light'||m==='dark') d.setAttribute('data-theme',m); }catch(e){}
+})();
+</script>
+<style>
+@font-face{font-family:'Fredoka';src:url('assets/fonts/fredoka-latin.woff2') format('woff2');font-weight:300 700;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+  @font-face{font-family:'Fredoka';src:url('assets/fonts/fredoka-latin-ext.woff2') format('woff2');font-weight:300 700;font-display:swap;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+  @font-face{font-family:'Albert Sans';src:url('assets/fonts/albert-sans-latin.woff2') format('woff2');font-weight:100 900;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+  @font-face{font-family:'Albert Sans';src:url('assets/fonts/albert-sans-latin-ext.woff2') format('woff2');font-weight:100 900;font-display:swap;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+:root{
+  --blue:#2F86D4; --teal:#34B6C9; --green:#7CC243; --orange:#F28A3A; --yellow:#F7B52C; --ink-brand:#1C2B3A;
+  --primary:#1565C0; --primary-h:#0F4F99; --on-primary:#fff;
+  --bg:#F6F9FB; --surface:#fff; --surface-2:#EDF3F7; --ink:#1C2B3A; --muted:#4A5968; --line:#D9E3EA; --line-2:#B9C8D3;
+  --blue-fg:#1565C0; --teal-fg:#0B6F7D; --green-fg:#3B6E12; --orange-fg:#A84C12; --yellow-fg:#7A5300;
+  --blue-bg:#E4F0FB; --teal-bg:#E0F5F8; --green-bg:#EAF6DE; --orange-bg:#FDEBDD; --yellow-bg:#FEF3D9;
+  --frame:#1C2B3A; --frame-bd:transparent; --shadow:0 12px 32px -14px rgba(28,43,58,.28); --foto-ov:rgba(10,20,30,0); --foto-f:none;
+  --focus:#F28A3A; color-scheme:light;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --primary:#1565C0; --primary-h:#2F86D4;
+  --bg:#0F1A22; --surface:#16242E; --surface-2:#1C2E3A; --ink:#EAF1F6; --muted:#A9B8C4; --line:#2A3F4D; --line-2:#3C5566;
+  --blue-fg:#8CC2F2; --teal-fg:#7FD9E5; --green-fg:#A9DC79; --orange-fg:#F7AE74; --yellow-fg:#F9CF6B;
+  --blue-bg:#16314A; --teal-bg:#123540; --green-bg:#1E3417; --orange-bg:#3A2616; --yellow-bg:#3A2F12;
+  --frame:#070D12; --frame-bd:#2A3F4D; --shadow:0 12px 32px -14px rgba(0,0,0,.6); --foto-ov:rgba(10,20,30,.25); --foto-f:brightness(.92);
+  --focus:#F7B52C; color-scheme:dark;
+} }
+:root[data-theme="dark"]{
+  --primary:#1565C0; --primary-h:#2F86D4;
+  --bg:#0F1A22; --surface:#16242E; --surface-2:#1C2E3A; --ink:#EAF1F6; --muted:#A9B8C4; --line:#2A3F4D; --line-2:#3C5566;
+  --blue-fg:#8CC2F2; --teal-fg:#7FD9E5; --green-fg:#A9DC79; --orange-fg:#F7AE74; --yellow-fg:#F9CF6B;
+  --blue-bg:#16314A; --teal-bg:#123540; --green-bg:#1E3417; --orange-bg:#3A2616; --yellow-bg:#3A2F12;
+  --frame:#070D12; --frame-bd:#2A3F4D; --shadow:0 12px 32px -14px rgba(0,0,0,.6); --foto-ov:rgba(10,20,30,.25); --foto-f:brightness(.92);
+  --focus:#F7B52C; color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.6 'Albert Sans',system-ui,-apple-system,'Segoe UI',sans-serif}
+h1,h2,h3{font-family:'Fredoka','Albert Sans',system-ui,sans-serif;font-weight:600;line-height:1.2;margin:0 0 12px;color:var(--ink)}
+h1{font-size:clamp(32px,5vw,52px)} h2{font-size:clamp(26px,3.6vw,38px)} h3{font-size:22px}
+p{margin:0 0 14px} a{color:var(--blue-fg)} img{max-width:100%}
+a:focus,button:focus,[tabindex]:focus{outline:3px solid var(--focus);outline-offset:2px}
+a:focus:not(:focus-visible),button:focus:not(:focus-visible),[tabindex]:focus:not(:focus-visible){outline:none}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.atla{position:absolute;left:8px;top:-60px;z-index:100;background:var(--primary);color:#fff;padding:12px 16px;border-radius:8px}
+.atla:focus{top:8px}
+.wrap{max-width:1200px;margin:0 auto;padding:0 16px}
+@media (min-width:720px){ .wrap{padding:0 24px} }
+.ic{width:1.25em;height:1.25em;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.25em}
+/* türe göre görünürlük ("JS kapalıyken" html sınıfı tur-ikisi) */
+html.tur-park [data-tur]:not([data-tur~="park"]),html.tur-atolye [data-tur]:not([data-tur~="atolye"]),html.tur-ikisi [data-tur]:not([data-tur~="ikisi"]){display:none!important}
+
+/* düğmeler (flex gap yok: Chrome 80) */
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:10px 20px;border-radius:999px;border:2px solid transparent;
+  font:700 16px/1.2 'Albert Sans',system-ui,sans-serif;text-decoration:none;cursor:pointer;text-align:center}
+.btn .ic{margin-right:8px}
+.btn-p{background:var(--primary);color:var(--on-primary)} .btn-p:hover{background:var(--primary-h)}
+.btn-s{background:var(--surface);color:var(--ink);border-color:var(--line-2)} .btn-s:hover{border-color:var(--blue)}
+.btn-k{min-height:44px;padding:8px 16px;font-size:15px}
+.btns{display:flex;flex-wrap:wrap;align-items:center;margin:-6px} .btns>*{margin:6px}
+.not{font-size:14px;color:var(--muted)}
+.rozet{display:inline-block;padding:2px 10px;border-radius:999px;font:700 13px/1.6 'Albert Sans',sans-serif;vertical-align:middle}
+.r-ek{background:var(--yellow-bg);color:var(--yellow-fg)} .r-yakinda{background:var(--teal-bg);color:var(--teal-fg)} .r-sec{background:var(--blue-bg);color:var(--blue-fg)}
+
+/* üst çubuk */
+.ust{position:sticky;top:0;z-index:50;background:var(--bg);border-bottom:1px solid var(--line)}
+.ust .wrap{display:flex;align-items:center;min-height:64px}
+.logo{display:flex;align-items:center;text-decoration:none;color:var(--ink);margin-right:auto;min-height:44px;min-width:0}
+.logo img{display:block;width:61px;height:40px}
+.logo b{font:600 22px/1 'Fredoka',sans-serif;margin-left:8px}
+.ust-nav{display:none}
+.ust-nav a{display:flex;align-items:center;min-height:44px;padding:0 10px;color:var(--ink);text-decoration:none;font-weight:600;border-radius:8px}
+.ust-nav a:hover{color:var(--blue-fg)}
+.ikon-btn{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--line-2);border-radius:999px;background:var(--surface);color:var(--ink);cursor:pointer;margin-left:8px}
+.ikon-btn .ic{width:22px;height:22px}
+.ust .btn{flex:0 0 auto;margin-left:8px;min-height:44px;padding:8px 14px;font-size:15px;white-space:nowrap}
+@media (max-width:389px){ .ust .btn{padding:8px 12px} }
+#tema .i-ay{display:none} :root[data-tema-etkin="dark"] #tema .i-gun{display:none} :root[data-tema-etkin="dark"] #tema .i-ay{display:inline}
+@media (max-width:419px){ .logo b{display:none} }
+@media (max-width:1023px){
+  .ust-nav{position:absolute;left:0;right:0;top:100%;background:var(--surface);border-bottom:1px solid var(--line);box-shadow:var(--shadow);padding:8px 16px 16px}
+  html.menu-acik .ust-nav{display:block}
+  .ust-nav a{min-height:48px;border-bottom:1px solid var(--line);border-radius:0}
+}
+@media (min-width:1024px){ .ust-nav{display:flex;margin-right:8px} #menu-btn{display:none} }
+
+/* bölümler */
+.bolum{padding:56px 0;scroll-margin-top:72px}
+@media (min-width:1024px){ .bolum{padding:80px 0} }
+.bolum.alt{background:var(--surface)}
+.ust-yazi{max-width:46em;margin-bottom:28px}
+.ust-yazi p{font-size:18px;color:var(--muted)}
+.kucuk-baslik{display:block;font:700 14px/1.4 'Albert Sans',sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--teal-fg);margin-bottom:8px}
+
+/* son çağrı + alt bilgi */
+.kapanis{text-align:center;background:var(--ink-brand);color:#fff}
+.kapanis h2{color:#fff} .kapanis p{color:#D5E0E8}
+.kapanis .btns{justify-content:center}
+.kapanis .btn-s{background:transparent;color:#fff;border-color:rgba(255,255,255,.6)}
+.kapanis .deneme{justify-content:center;color:#B9E58F}
+.alt-bilgi{padding:32px 0 24px;font-size:14px;color:var(--muted);border-top:1px solid var(--line)}
+.alt-bilgi .wrap{display:grid;gap:12px}
+@media (min-width:720px){ .alt-bilgi .wrap{grid-template-columns:1fr auto;align-items:start} }
+.alt-bilgi a{color:var(--ink);display:inline-flex;align-items:center;min-height:44px}
+.alt-bilgi p{margin:0}
+
+/* telefonda alttaki sabit çubuk */
+.mcubuk{position:fixed;left:0;right:0;bottom:0;z-index:40;padding:8px 16px;padding-bottom:calc(8px + env(safe-area-inset-bottom));background:var(--surface);border-top:1px solid var(--line);box-shadow:0 -6px 18px -10px rgba(0,0,0,.3);transition:transform .25s ease}
+.mcubuk .btn{width:100%;min-height:44px}
+.mcubuk.gizli{transform:translateY(110%)}
+@media (prefers-reduced-motion: reduce){ .mcubuk{transition:none} }
+@media (min-width:720px){ .mcubuk{display:none} }
+@media (max-width:719px){ body{padding-bottom:72px} }
+/* ── Bütün özellikler sayfası ── */
+.ust-nav a[aria-current="page"]{color:var(--blue-fg)}
+.giris-ust{padding:24px 0 40px}
+@media (min-width:1024px){ .giris-ust{padding:32px 0 56px} }
+.yol{display:flex;flex-wrap:wrap;align-items:center;margin-bottom:16px;font-size:15px;color:var(--muted)}
+.yol a{display:inline-flex;align-items:center;min-height:44px;font-weight:700;color:var(--blue-fg);text-decoration:none}
+.yol a .ic{margin-right:6px}
+.yol .ayrac{margin:0 8px;color:var(--muted)}
+.giris-ust p.giris{font-size:19px;color:var(--muted);max-width:40em}
+.deneme{display:flex;align-items:center;margin-top:16px;font-weight:700;color:var(--green-fg)} .deneme .ic{margin-right:8px}
+
+/* gövde: masaüstünde solda yapışkan içindekiler, telefonda üstte yatay çipler */
+.sayfa{display:grid;grid-template-columns:minmax(0,1fr);padding-bottom:56px}
+.icindekiler{position:sticky;top:65px;z-index:30;background:var(--bg);border-bottom:1px solid var(--line);margin:0 -16px}
+.icindekiler .ic-b{display:none}
+.icindekiler ul{display:flex;overflow-x:auto;list-style:none;margin:0;padding:8px 16px;-webkit-overflow-scrolling:touch}
+.icindekiler li{flex:0 0 auto;margin-right:8px}
+.icindekiler li:last-child{margin-right:0}
+.icindekiler a{display:flex;align-items:center;min-height:44px;padding:8px 14px;border:1px solid var(--line-2);border-radius:999px;background:var(--surface);color:var(--ink);font:700 15px/1.2 'Albert Sans',sans-serif;text-decoration:none;white-space:nowrap}
+.icindekiler a .ic{margin-right:8px;width:18px;height:18px;color:var(--muted)}
+.icindekiler a[aria-current="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.icindekiler a[aria-current="true"] .ic{color:var(--bg)}
+@media (min-width:720px){ .icindekiler{margin:0 -24px} .icindekiler ul{padding:8px 24px} }
+@media (min-width:1024px){
+  .sayfa{grid-template-columns:240px minmax(0,1fr);column-gap:48px;align-items:start}
+  .icindekiler{top:88px;margin:0;border:0;background:transparent;max-height:calc(100vh - 104px);overflow-y:auto}
+  .icindekiler .ic-b{display:block;font:700 14px/1.4 'Albert Sans',sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--teal-fg);margin:4px 0 8px}
+  .icindekiler ul{display:block;overflow:visible;padding:0}
+  .icindekiler li{margin:0 0 4px}
+  .icindekiler a{border:0;border-radius:10px;background:transparent;padding:8px 12px;white-space:normal}
+  .icindekiler a:hover{background:var(--surface-2)}
+}
+
+/* kategoriler */
+.kat{padding:40px 0 8px;scroll-margin-top:140px;border-top:1px solid var(--line)}
+.kat:first-child{border-top:0}
+@media (min-width:1024px){ .kat{padding:48px 0 16px;scroll-margin-top:88px} .kat:first-child{padding-top:8px} }
+.kat-bas{display:flex;align-items:flex-start;margin-bottom:24px}
+.kat-bas .ikon{display:flex;align-items:center;justify-content:center;flex:0 0 48px;height:48px;border-radius:14px;margin-right:16px}
+.kat-bas .ikon .ic{width:24px;height:24px}
+.kat-bas h2{font-size:clamp(24px,3vw,32px);margin-bottom:6px}
+.kat-bas p{margin:0;font-size:18px;color:var(--muted)}
+.ik-mavi{background:var(--blue-bg);color:var(--blue-fg)} .ik-teal{background:var(--teal-bg);color:var(--teal-fg)} .ik-yesil{background:var(--green-bg);color:var(--green-fg)}
+.ik-turuncu{background:var(--orange-bg);color:var(--orange-fg)} .ik-sari{background:var(--yellow-bg);color:var(--yellow-fg)}
+.kat-ic{display:grid;grid-template-columns:minmax(0,1fr);gap:24px}
+@media (min-width:1024px){ .kat-ic.gorselli{grid-template-columns:minmax(0,1fr) 200px;gap:40px;align-items:start} }
+.ozl-izgara{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+@media (min-width:720px){ .ozl-izgara{grid-template-columns:minmax(0,1fr) minmax(0,1fr)} }
+.ozl{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 18px}
+.ozl h3{font-size:18px;margin-bottom:6px}
+.ozl p{margin:0;color:var(--muted)}
+.ozl .rozet{margin-left:6px}
+.r-yeni{background:var(--green-bg);color:var(--green-fg)}
+.r-ek{background:var(--yellow-bg);color:var(--yellow-fg)} .r-yakinda{background:var(--teal-bg);color:var(--teal-fg)}
+.ekran-fig{margin:0 auto;width:200px}
+.ekran-fig figcaption{margin-top:10px;text-align:center;font-size:14px;color:var(--muted)}
+.fr{position:relative;background:var(--frame);border:1px solid var(--frame-bd);box-shadow:var(--shadow)}
+.fr-tel{border-radius:28px;padding:7px}
+.scr-kutu{position:relative;overflow:hidden;background:var(--surface-2);border-radius:21px}
+.scr-kutu img{display:block;width:100%;height:auto}
+@media (min-width:1024px){ .ekran-fig{position:sticky;top:96px} }
+
+/* ayarlar: 7 grup */
+.ayar-izgara{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+@media (min-width:720px){ .ayar-izgara{grid-template-columns:minmax(0,1fr) minmax(0,1fr)} }
+.ayar{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 18px}
+.ayar h3{display:flex;align-items:center;font-size:18px;margin-bottom:8px}
+.ayar h3 .ic{margin-right:10px;color:var(--blue-fg)}
+.ayar ul{list-style:none;margin:0;padding:0}
+.ayar li{padding:6px 0;border-top:1px solid var(--line);color:var(--muted)}
+.ayar li:first-child{border-top:0}
+.ayar li b{display:block;color:var(--ink)}
+
+/* belge galerisi */
+.galeri{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;margin:24px 0 0;padding:0;list-style:none}
+@media (min-width:720px){ .galeri{grid-template-columns:repeat(4,minmax(0,1fr))} }
+.galeri figure{margin:0}
+.galeri button{display:block;width:100%;padding:0;border:1px solid var(--line-2);border-radius:12px;overflow:hidden;background:#fff;color:#1C2B3A;cursor:zoom-in}
+.galeri button:hover{border-color:var(--blue)}
+.galeri img{display:block;width:100%;height:auto}
+.galeri figcaption{margin-top:8px;font-size:15px}
+.galeri figcaption span{display:block;font-size:14px;color:var(--muted)}
+.galeri-not{margin:12px 0 0;font-size:14px;color:var(--muted)}
+.buyuk{width:min(1100px,calc(100vw - 32px));max-width:none;max-height:calc(100vh - 32px);padding:0;border:0;border-radius:16px;background:var(--surface);color:var(--ink);box-shadow:0 24px 64px -16px rgba(0,0,0,.6)}
+.buyuk::backdrop{background:rgba(10,20,30,.75)}
+.buyuk.yedek{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:200;overflow:auto}
+.buyuk-ust{display:flex;align-items:center;padding:8px 8px 8px 20px;border-bottom:1px solid var(--line)}
+.buyuk-ust h2{flex:1 1 auto;margin:0;font-size:20px}
+.buyuk-ust .ikon-btn{margin-left:8px}
+.buyuk-gov{padding:12px}
+.buyuk-gov img{display:block;width:100%;height:auto;max-height:calc(100vh - 150px);object-fit:contain;background:#fff;border-radius:8px}
+
+/* ara çağrı ve ek hizmetler */
+.ara-cagri{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;align-items:center;margin:40px 0 0;padding:24px;border-radius:20px;background:var(--blue-bg)}
+.ara-cagri h2{font-size:24px;margin-bottom:6px}
+.ara-cagri p{margin:0;color:var(--ink)}
+@media (min-width:1024px){ .ara-cagri{grid-template-columns:minmax(0,1fr) auto;padding:28px 32px} }
+.ek-kart{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:24px}
+.ek-kart h3{display:flex;align-items:center;flex-wrap:wrap;font-size:22px}
+.ek-kart h3 .ic{margin-right:10px;color:var(--yellow-fg)}
+.ek-kart h3 .rozet{margin-left:10px}
+.ek-kart h4{font:600 20px/1.3 'Fredoka',sans-serif;margin:0 0 10px}
+.ek-kart+.ek-kart{margin-top:16px}
+.liste{list-style:none;margin:0 0 20px;padding:0}
+.liste li{display:flex;align-items:flex-start;padding:5px 0}
+.liste li .ic{color:var(--blue-fg);margin:3px 10px 0 0;width:20px;height:20px}
+.digipuan{display:flex;align-items:flex-start;margin-top:20px;padding:16px;border-radius:14px;background:var(--yellow-bg)}
+.digipuan .ic{margin:3px 12px 0 0;color:var(--yellow-fg)}
+.cipler{display:flex;flex-wrap:wrap;list-style:none;margin:8px -4px 0;padding:0}
+.cipler li{margin:4px;padding:6px 14px;border-radius:999px;background:var(--teal-bg);color:var(--ink);font-size:15px;line-height:1.4}
+.geri-don{margin-top:32px}
+</style>
+</head>
+<body>
+<!-- Simgeler: Lucide (ISC lisansı, assets/LICENSE-lucide.txt) — uygulamayla aynı alt küme -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></symbol><symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></symbol><symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></symbol><symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol><symbol id="i-message-circle" viewBox="0 0 24 24"><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"/></symbol><symbol id="i-monitor" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></symbol><symbol id="i-gift" viewBox="0 0 24 24"><path d="M12 7v14"/><path d="M20 11v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8"/><path d="M7.5 7a1 1 0 0 1 0-5A4.8 8 0 0 1 12 7a4.8 8 0 0 1 4.5-5 1 1 0 0 1 0 5"/><rect x="3" y="7" width="18" height="4" rx="1"/></symbol><symbol id="i-house" viewBox="0 0 24 24"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol><symbol id="i-door-open" viewBox="0 0 24 24"><path d="M10 21H2"/><path d="M10 3H7a2 2 0 00-2 2v16"/><path d="M14 12h.01"/><path d="M19 21V5a2 2 0 00-1.675-1.974l-6.163-1.013A1 1 0 0010 3v18a1 1 0 001.124.992z"/><path d="M22 21h-3"/></symbol><symbol id="i-coffee" viewBox="0 0 24 24"><path d="M10 2v2"/><path d="M14 2v2"/><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/><path d="M6 2v2"/></symbol><symbol id="i-calendar-days" viewBox="0 0 24 24"><path d="M8 2v3"/><path d="M16 2v3"/><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M8 13h.01"/><path d="M12 13h.01"/><path d="M16 13h.01"/><path d="M8 17h.01"/><path d="M12 17h.01"/><path d="M16 17h.01"/></symbol><symbol id="i-palette" viewBox="0 0 24 24"><path d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"/><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/></symbol><symbol id="i-wallet" viewBox="0 0 24 24"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></symbol><symbol id="i-award" viewBox="0 0 24 24"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></symbol><symbol id="i-chart-column" viewBox="0 0 24 24"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></symbol><symbol id="i-cloud" viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></symbol><symbol id="i-settings" viewBox="0 0 24 24"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></symbol><symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></symbol><symbol id="i-building-2" viewBox="0 0 24 24"><path d="M10 12h4"/><path d="M10 8h4"/><path d="M14 21v-3a2 2 0 0 0-4 0v3"/><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"/><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/></symbol><symbol id="i-banknote" viewBox="0 0 24 24"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></symbol><symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></symbol><symbol id="i-printer" viewBox="0 0 24 24"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/><rect x="6" y="14" width="12" height="8" rx="1"/></symbol><symbol id="i-key-round" viewBox="0 0 24 24"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></symbol><symbol id="i-star" viewBox="0 0 24 24"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></symbol><symbol id="i-credit-card" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/><path d="M6 14h2"/></symbol><symbol id="i-scan-line" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></symbol><symbol id="i-circle-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 9-5.5 5.5L8 12"/></symbol><symbol id="i-repeat" viewBox="0 0 24 24"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></symbol><symbol id="i-store" viewBox="0 0 24 24"><path d="M15 21v-5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v5"/><path d="M17.774 10.31a1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.451 0 1.12 1.12 0 0 0-1.548 0 2.5 2.5 0 0 1-3.452 0 1.12 1.12 0 0 0-1.549 0 2.5 2.5 0 0 1-3.77-3.248l2.889-4.184A2 2 0 0 1 7 2h10a2 2 0 0 1 1.653.873l2.895 4.192a2.5 2.5 0 0 1-3.774 3.244"/><path d="M4 10.95V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8.05"/></symbol><symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol></defs></svg>
+<a class="atla" href="#icerik">İçeriğe geç</a>
+
+<header class="ust">
+  <div class="wrap">
+    <a class="logo" href="index.html" data-ana aria-label="DigiPark, ana sayfa"><picture><source type="image/webp" srcset="assets/logo/digipark-logo-48.webp 1x, assets/logo/digipark-logo-96.webp 2x"><img src="assets/logo/digipark-logo-96.png" width="61" height="40" alt=""></picture><b>DigiPark</b></a>
+    <nav class="ust-nav" id="ust-nav" aria-label="Site bölümleri">
+      <a href="index.html#cozumler" data-ana>Çözümler</a><a href="ozellikler.html" aria-current="page">Bütün özellikler</a><a href="index.html#oyun-parklari" data-ana>Oyun parkları</a><a href="index.html#atolyeler" data-ana>Atölyeler</a><a href="index.html#size-ozel" data-ana>Size özel</a><a href="index.html#destek" data-ana>Destek</a>
+    </nav>
+    <button type="button" class="ikon-btn" id="tema" aria-pressed="false" aria-label="Koyu tema" title="Koyu tema"><svg class="ic i-gun" aria-hidden="true"><use href="#i-sun"/></svg><svg class="ic i-ay" aria-hidden="true"><use href="#i-moon"/></svg></button>
+    <a class="btn btn-p" data-wa="tur" href="https://wa.me/905075383119?text=Merhaba%2C%20hem%20oyun%20park%C4%B1%20hem%20at%C3%B6lye%20i%C5%9Fletiyorum%3B%20DigiPark'%C4%B1%20tan%C4%B1mak%20istiyorum.%20Uygun%20bir%20zamanda%20k%C4%B1sa%20bir%20tan%C4%B1t%C4%B1m%20yapabilir%20misiniz%3F" target="_blank" rel="noopener">Size tanıtalım</a>
+    <button type="button" class="ikon-btn" id="menu-btn" aria-expanded="false" aria-controls="ust-nav" aria-label="Menü"><svg class="ic" aria-hidden="true"><use href="#i-menu"/></svg></button>
+  </div>
+</header>
+
+<main id="icerik">
+<section class="giris-ust" aria-labelledby="baslik">
+  <div class="wrap">
+    <nav class="yol" aria-label="Konum"><a href="index.html" data-ana><svg class="ic" aria-hidden="true"><use href="#i-chevron-left"/></svg>Ana sayfa</a><span class="ayrac" aria-hidden="true">/</span><span aria-current="page">Bütün özellikler</span></nav>
+    <span class="kucuk-baslik">DigiPark 0.4.0</span>
+    <h1 id="baslik">DigiPark'ın bütün özellikleri</h1>
+    <p class="giris">Oyun parkı, atölye ve kurslar için giriş, kafe, rezervasyon, yoklama, ödeme ve raporların tamamı. Aşağıdaki her özellik DigiPark'a dahildir; Puan Kulübü ve AI Asistan ayrı ek hizmetlerdir.</p>
+    <div class="btns">
+      <a class="btn btn-p" data-wa="tur" href="https://wa.me/905075383119?text=Merhaba%2C%20hem%20oyun%20park%C4%B1%20hem%20at%C3%B6lye%20i%C5%9Fletiyorum%3B%20DigiPark'%C4%B1%20tan%C4%B1mak%20istiyorum.%20Uygun%20bir%20zamanda%20k%C4%B1sa%20bir%20tan%C4%B1t%C4%B1m%20yapabilir%20misiniz%3F" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-message-circle"/></svg>Size tanıtalım</a>
+      <a class="btn btn-s" data-demo="tur" href="demo/?tur=ikisi"><svg class="ic" aria-hidden="true"><use href="#i-monitor"/></svg>Demoyu hemen dene</a>
+    </div>
+    <p class="deneme"><svg class="ic" aria-hidden="true"><use href="#i-gift"/></svg>10 gün ücretsiz deneme</p>
+  </div>
+</section>
+
+<div class="wrap sayfa">
+  <nav class="icindekiler" id="icindekiler" aria-label="Bu sayfadaki bölümler">
+    <span class="ic-b" aria-hidden="true">Bu sayfada</span>
+    <ul>
+      <li><a href="#ana-ekran"><svg class="ic" aria-hidden="true"><use href="#i-house"/></svg>Ana ekran ve Bugün</a></li>
+      <li><a href="#giris-iceride"><svg class="ic" aria-hidden="true"><use href="#i-door-open"/></svg>Giriş ve içeride</a></li>
+      <li><a href="#kafe-kasa"><svg class="ic" aria-hidden="true"><use href="#i-coffee"/></svg>Kafe ve kasa</a></li>
+      <li><a href="#rezervasyon-uyelik"><svg class="ic" aria-hidden="true"><use href="#i-calendar-days"/></svg>Rezervasyon ve üyelik</a></li>
+      <li><a href="#atolye-siniflar"><svg class="ic" aria-hidden="true"><use href="#i-palette"/></svg>Atölye ve sınıflar</a></li>
+      <li><a href="#odemeler-hatirlatmalar"><svg class="ic" aria-hidden="true"><use href="#i-wallet"/></svg>Ödemeler ve hatırlatmalar</a></li>
+      <li><a href="#belgeler"><svg class="ic" aria-hidden="true"><use href="#i-award"/></svg>Belgeler</a></li>
+      <li><a href="#raporlar"><svg class="ic" aria-hidden="true"><use href="#i-chart-column"/></svg>Raporlar</a></li>
+      <li><a href="#cihazlar-yedek"><svg class="ic" aria-hidden="true"><use href="#i-cloud"/></svg>Cihazlar ve yedek</a></li>
+      <li><a href="#ayarlar"><svg class="ic" aria-hidden="true"><use href="#i-settings"/></svg>Ayarlar</a></li>
+      <li><a href="#ek-hizmetler"><svg class="ic" aria-hidden="true"><use href="#i-sparkles"/></svg>Ek hizmetler</a></li>
+    </ul>
+  </nav>
+
+  <div class="govde">
+    <!-- 1. ANA EKRAN VE BUGÜN -->
+    <section class="kat" id="ana-ekran" aria-labelledby="k-ana">
+      <div class="kat-bas"><span class="ikon ik-mavi"><svg class="ic" aria-hidden="true"><use href="#i-house"/></svg></span><div><h2 id="k-ana">Ana ekran ve Bugün</h2><p>0.4.0 ile yeni görünüm: solda düzenli bir menü, üstte günün işleri.</p></div></div>
+      <div class="kat-ic gorselli">
+        <div class="ozl-izgara">
+          <article class="ozl"><h3>Bugün satırı</h3><p>Yoklaması alınmayan dersler, geciken ödemeler, bugünkü ve yarınki rezervasyonlar, doğum günleri, süresi dolmak üzere olan çocuklar ve son iki derse gelmeyen öğrenciler ekranın üstünde. Birine dokununca ilgili kişiler ve yapılacak iş açılır.</p></article>
+          <article class="ozl"><h3>İşletmenize göre menü</h3><p>Oyun parkı, Atölye ve sınıf ya da İkisi birden seçin; menü ve ana ekran işinize göre düzenlenir. Az kullandığınız bölümler "Diğer" altında durur, hiçbir kayıt silinmez.</p></article>
+          <article class="ozl"><h3>Düzenli menü</h3><p>Bölümler dört grupta: Günlük işler, Planlama, Ek hizmetler ve Yönetim. Yazılar büyük ve okunaklı, düğmeler parmakla rahat basılacak boyutta.</p></article>
+          <article class="ozl"><h3>Hızlı arama</h3><p>Üstteki kutuya çocuk ya da veli adını veya kart kodunu yazın; sonuçlar yazdıkça listelenir.</p></article>
+          <article class="ozl"><h3>Telefon ve tablet düzeni</h3><p>Telefonda en çok kullanılan bölümler altta tek dokunuşla açılır, geri kalanı "Daha fazla"da; pencereler tam ekran açılır. Tablette ince bir simge şeridi ekranı geniş kullanır.</p></article>
+          <article class="ozl"><h3>Açık ve koyu tema</h3><p>Açık, Koyu ya da Otomatik (cihazın ayarına göre). Fiş, katılım belgesi ve QR kart her zaman açık renkte çıkar.</p></article>
+        </div>
+        <figure class="ekran-fig"><div class="fr fr-tel"><div class="scr-kutu"><picture class="scr"><source media="(prefers-color-scheme: dark)" srcset="assets/ekran/bugun-telefon-390-koyu.webp 390w, assets/ekran/bugun-telefon-koyu.webp 780w" sizes="200px"><img src="assets/ekran/bugun-telefon-390-acik.webp" srcset="assets/ekran/bugun-telefon-390-acik.webp 390w, assets/ekran/bugun-telefon-acik.webp 780w" sizes="200px" width="390" height="844" alt="DigiPark Ana ekran ve Bugün satırı, telefon görünümü" loading="lazy" decoding="async"></picture></div></div><figcaption>Ana ekran ve Bugün satırı, telefonda</figcaption></figure>
+      </div>
+    </section>
+
+    <!-- 2. GİRİŞ VE İÇERİDE -->
+    <section class="kat" id="giris-iceride" aria-labelledby="k-giris">
+      <div class="kat-bas"><span class="ikon ik-teal"><svg class="ic" aria-hidden="true"><use href="#i-door-open"/></svg></span><div><h2 id="k-giris">Giriş ve içeride</h2><p>Kapıda hızlı kayıt, içeride süre ve ücret takibi.</p></div></div>
+      <div class="kat-ic gorselli">
+        <div class="ozl-izgara">
+          <article class="ozl"><h3>Yeni giriş</h3><p>Çocuğun adı, doğum tarihi ya da yaşı, veli adı ve telefonu. Daha önce gelmiş bir çocuk ya da veli yazıldığında bilgileri önerilir.</p></article>
+          <article class="ozl"><h3>Ücret tipi</h3><p>Dakika bazlı, saatlik, yarım saatlik ya da sabit giriş. Üyeliği olan çocukta süre üyelik bakiyesinden düşer.</p></article>
+          <article class="ozl"><h3>Alerji, not ve indirim kodu</h3><p>Alerji ya da özel sağlık notu, serbest not ve tanımlı bir indirim kodu girişte eklenir.</p></article>
+          <article class="ozl"><h3>Onam formu</h3><p>Veli park kurallarını okuyup formu ekranda imzalar; ardından giriş kaydedilir. Kuralları kendiniz yazarsınız.</p></article>
+          <article class="ozl"><h3>Aynı veliden ikinci çocuk</h3><p>Veli bilgilerini yeniden yazmadan kardeş için ikinci kayıt açılır.</p></article>
+          <article class="ozl"><h3>Kolay tarih girişi</h3><p>Tarihi gg.aa.yyyy biçiminde yazın ya da takvimde yıl ve ay listesinden seçin. Doğum tarihinden yaş kendiliğinden hesaplanır, her yıl güncellenir.</p></article>
+          <article class="ozl"><h3>İçerideki çocuklar</h3><p>Parktaki her çocuk giriş saatiyle listelenir; dakika bazlı girişlerde geçen süre canlı işler, çıkışta tutar kendiliğinden hesaplanır.</p></article>
+          <article class="ozl"><h3>Süre doluyor</h3><p>Süresi dolmak üzere olan çocuklar Bugün satırında görünür; veliye "süre doluyor" mesajı tek dokunuşla gider.</p></article>
+        </div>
+        <figure class="ekran-fig"><div class="fr fr-tel"><div class="scr-kutu"><picture class="scr"><source media="(prefers-color-scheme: dark)" srcset="assets/ekran/iceride-telefon-390-koyu.webp 390w, assets/ekran/iceride-telefon-koyu.webp 780w" sizes="200px"><img src="assets/ekran/iceride-telefon-390-acik.webp" srcset="assets/ekran/iceride-telefon-390-acik.webp 390w, assets/ekran/iceride-telefon-acik.webp 780w" sizes="200px" width="390" height="844" alt="DigiPark İçerideki çocuklar, telefon görünümü" loading="lazy" decoding="async"></picture></div></div><figcaption>İçerideki çocuklar, telefonda</figcaption></figure>
+      </div>
+    </section>
+
+    <!-- 3. KAFE VE KASA -->
+    <section class="kat" id="kafe-kasa" aria-labelledby="k-kafe">
+      <div class="kat-bas"><span class="ikon ik-sari"><svg class="ic" aria-hidden="true"><use href="#i-coffee"/></svg></span><div><h2 id="k-kafe">Kafe ve kasa</h2><p>Adisyon, stok, tahsilat ve fiş tek yerde.</p></div></div>
+      <div class="ozl-izgara">
+        <article class="ozl"><h3>Adisyon</h3><p>Bir veli ya da masa için adisyon açın, menüden dokunarak ürün ekleyin; açık adisyonun içindeki her ürünü adet ve ara toplamıyla görün.</p></article>
+        <article class="ozl"><h3>Stok rozetleri</h3><p>Stoğu azalan üründe "Az kaldı", biten üründe "Tükendi" rozeti. Satışta stok kendiliğinden düşer.</p></article>
+        <article class="ozl"><h3>Menü yönetimi</h3><p>İçecek, atıştırmalık ve yemekleri fiyatlarıyla ekleyip düzenleyin.</p></article>
+        <article class="ozl"><h3>Nakit ve kart</h3><p>Her tahsilatta nakit ya da kart seçilir; kasa raporunda ikisi ayrı görünür.</p></article>
+        <article class="ozl"><h3>Adisyon geçmişi</h3><p>Kapanan park ve kafe adisyonları tarih, süre ve tutarlarıyla; Tümü, Yalnız Park ya da Yalnız Kafe diye süzülür, Excel'e aktarılır.</p></article>
+        <article class="ozl"><h3>Fiş</h3><p>Fiş yazdırın; fiş altına telefon, adres ya da mesaj ekleyin. İsterseniz logonuz siyah-beyaz basılır. Yeni kurulumda "Test Fişi Yazdır" ile deneyin.</p></article>
+        <article class="ozl"><h3>İndirim ve kampanya kodları</h3><p>Kodları bir kez tanımlayın, giriş ekranında uygulayın.</p></article>
+      </div>
+    </section>
+
+    <!-- 4. REZERVASYON VE ÜYELİK -->
+    <section class="kat" id="rezervasyon-uyelik" aria-labelledby="k-rez">
+      <div class="kat-bas"><span class="ikon ik-turuncu"><svg class="ic" aria-hidden="true"><use href="#i-calendar-days"/></svg></span><div><h2 id="k-rez">Rezervasyon ve üyelik</h2><p>Doğum günü, etkinlik ve ön ödemeli saat paketleri.</p></div></div>
+      <div class="ozl-izgara">
+        <article class="ozl"><h3>Rezervasyon takvimi</h3><p>Aylık takvimde doluluğu görün, günü seçip rezervasyon ekleyin: veli, saat, kişi sayısı, paket ve isteğe bağlı görevli personel.</p></article>
+        <article class="ozl"><h3>Paketler ve alanlar</h3><p>Doğum günü ve etkinlik paketlerini, ayrı rezerve edilen alanları (salon, oda, atölye) tanımlayın. Aynı alan aynı saatte iki kez rezerve edilemez.</p></article>
+        <article class="ozl"><h3>Kapora ve tahsilat</h3><p>Kapora ya da tamamı; nakit veya kart, veliye WhatsApp makbuzu. İptalde iade tutarını girin, ciro kendiliğinden düzelir.</p></article>
+        <article class="ozl"><h3>Rezervasyon hatırlatması</h3><p>Bugünkü ve yarınki rezervasyonlar Bugün satırında; yarınki rezervasyonun velisine hazır hatırlatma mesajı. Bütün rezervasyonlar Excel'e aktarılır.</p></article>
+        <article class="ozl"><h3>Yaklaşan doğum günleri</h3><p>Önümüzdeki 14 günde doğum günü olan çocuklar listelenir. "Teklif Gönder" ile veliye paket teklifi, tek dokunuşla hazır doldurulmuş doğum günü rezervasyonu.</p></article>
+        <article class="ozl"><h3>Yetişkinlere tebrik</h3><p>Doğum tarihi girilen yetişkin katılımcılara paket teklifi yerine doğum günü tebriği gönderilir.</p></article>
+        <article class="ozl"><h3>Üyelik paketleri</h3><p>Gümüş, Altın gibi ön ödemeli saat paketleri satın; bakiyeli kart açılır, girişte "Üyelikten Düş" ile süre bakiyeden düşer.</p></article>
+        <article class="ozl"><h3>Üyelik ödemeleri</h3><p>Üyelik kartında bütün ödemeler nakit/kart bilgisiyle listelenir; veliye makbuz gönderin, yanlış ödemeyi güvenle geri alın.</p></article>
+      </div>
+    </section>
+
+    <!-- 5. ATÖLYE VE SINIFLAR -->
+    <section class="kat" id="atolye-siniflar" aria-labelledby="k-atolye">
+      <div class="kat-bas"><span class="ikon ik-yesil"><svg class="ic" aria-hidden="true"><use href="#i-palette"/></svg></span><div><h2 id="k-atolye">Atölye ve sınıflar</h2><p>Tekrar eden dersler, yoklama ve öğrenciler.</p></div></div>
+      <div class="kat-ic gorselli">
+        <div class="ozl-izgara">
+          <article class="ozl"><h3>Bugünkü dersler</h3><p>Her ders saati, eğitmeni ve doluluğuyla; "şimdi derste" ve "yoklama bekliyor" durumları bir bakışta.</p></article>
+          <article class="ozl"><h3>Yoklama</h3><p>Öğrenciler tek dokunuşla işaretlenir; kimse gelmese de "Yoklamayı Tamamla" ile kaydedilir. Geçmiş bir gün düzeltilebilir, telafi gibi program dışı günler ayrıca belirtilir.</p></article>
+          <article class="ozl"><h3>Sınıflar</h3><p>Ad, renk, günler, saat ve ders süresi; isteğe bağlı yaş sınırı ve kontenjan, doluluk oranı. Öğretmen adı ve unvanı: Öğretmen, Eğitmen, Koç ya da Atölye Lideri.</p></article>
+          <article class="ozl"><h3>Çocuk, yetişkin, ebeveyn + çocuk</h3><p>Yetişkin sınıfında katılımcının kendi telefonu kullanılır. Ebeveyn + çocuk sınıfında ikisi tek kayıttır: tek telefon, tek ödeme, tek yoklama.</p></article>
+          <article class="ozl"><h3>Öğrenciler ve veliler</h3><p>Bütün öğrenciler tek listede; ad, veli ya da telefonla arayın, sınıfa göre süzün. Öğrenci başka sınıfa taşınabilir.</p></article>
+          <article class="ozl"><h3>Devamsızlık</h3><p>Son iki derse gelmeyen öğrenciler Bugün satırında; son 3 haftada hiç gelmeyenler gün sonu raporunda.</p></article>
+          <article class="ozl"><h3>Kişiye göre hitap</h3><p>Çocuk sınıfında veliye, yetişkine kendisine, ebeveyn + çocuk sınıfında ikisine birden hitap eden hazır mesajlar.</p></article>
+          <article class="ozl"><h3>Listenizi taşıyın</h3><p>Sınıf öğrencilerinizi Excel'den aktararak başlayın (Cihazlar ve yedek bölümünde).</p></article>
+        </div>
+        <figure class="ekran-fig"><div class="fr fr-tel"><div class="scr-kutu"><picture class="scr"><source media="(prefers-color-scheme: dark)" srcset="assets/ekran/dersler-telefon-390-koyu.webp 390w, assets/ekran/dersler-telefon-koyu.webp 780w" sizes="200px"><img src="assets/ekran/dersler-telefon-390-acik.webp" srcset="assets/ekran/dersler-telefon-390-acik.webp 390w, assets/ekran/dersler-telefon-acik.webp 780w" sizes="200px" width="390" height="844" alt="DigiPark Bugünkü dersler, telefon görünümü" loading="lazy" decoding="async"></picture></div></div><figcaption>Bugünkü dersler, telefonda</figcaption></figure>
+      </div>
+      <aside class="ara-cagri" aria-labelledby="ara-b">
+        <div><h2 id="ara-b">Kendi işletmenizde görmek ister misiniz?</h2><p>Kısa bir tanıtımla birlikte bakalım ya da demoyu hemen açın.</p></div>
+        <div class="btns">
+          <a class="btn btn-p" data-wa="tur" href="https://wa.me/905075383119?text=Merhaba%2C%20hem%20oyun%20park%C4%B1%20hem%20at%C3%B6lye%20i%C5%9Fletiyorum%3B%20DigiPark'%C4%B1%20tan%C4%B1mak%20istiyorum.%20Uygun%20bir%20zamanda%20k%C4%B1sa%20bir%20tan%C4%B1t%C4%B1m%20yapabilir%20misiniz%3F" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-message-circle"/></svg>Size tanıtalım</a>
+          <a class="btn btn-s" data-demo="tur" href="demo/?tur=ikisi"><svg class="ic" aria-hidden="true"><use href="#i-monitor"/></svg>Demoyu hemen dene</a>
+        </div>
+      </aside>
+    </section>
+
+    <!-- 6. ÖDEMELER VE HATIRLATMALAR -->
+    <section class="kat" id="odemeler-hatirlatmalar" aria-labelledby="k-odeme">
+      <div class="kat-bas"><span class="ikon ik-turuncu"><svg class="ic" aria-hidden="true"><use href="#i-wallet"/></svg></span><div><h2 id="k-odeme">Ödemeler ve hatırlatmalar</h2><p>Ödeme alındı mı, ders ne zaman, yoklama unutuldu mu: DigiPark hatırlatır.</p></div></div>
+      <div class="kat-ic gorselli">
+        <div class="ozl-izgara">
+          <article class="ozl"><h3>Ödemeler ekranı</h3><p>Geciken, bugün ödenecek ve yaklaşan ödemeler ayrı listelerde; veliye hatırlatma ve ödeme alma tek dokunuşta.</p></article>
+          <article class="ozl"><h3>Ödeme planı</h3><p>Sınıf için günlük, haftalık ya da aylık tutar. Sonraki ödeme tarihi kendiliğinden hesaplanır; kartta "Bu dönem ödendi" ya da "Gecikti" rozeti.</p></article>
+          <article class="ozl"><h3>Net onay</h3><p>Ödeme alınınca kimden, ne kadar, hangi sınıf ya da paket için ve kimin aldığı büyük bir onay ekranında görünür; nakit ya da kart seçilir.</p></article>
+          <article class="ozl"><h3>Makbuz ve fiş</h3><p>Veliye WhatsApp makbuzu hazır yazılmış açılır; isterseniz fiş yazdırın.</p></article>
+          <article class="ozl"><h3>Güvenli geri alma</h3><p>Aynı gün alınan ödeme iptal edilir; geçmiş bir günün ödemesi için bugüne iade kaydı düşülür, kapanmış günlerin raporları değişmez.</p></article>
+          <article class="ozl"><h3>Hatırlatmalar</h3><p>Ders başlamadan (kaç dakika önce, siz seçin), ders bitiminden sonra yoklama alınmadıysa, o gün ödemesi gelen öğrenciler ve günün rezervasyonları için bildirim. Ödeme hatırlatmaları yalnız patrona gelir.</p></article>
+          <article class="ozl"><h3>Uygulama kapalıyken de</h3><p>Android telefon ve tablette bildirimler önümüzdeki 7 gün için kurulur, uygulama kapalıyken de gelir. Windows ve Mac'te uygulama açıkken gelir.</p></article>
+          <article class="ozl"><h3>Veliye hazır mesaj</h3><p>WhatsApp velinin numarasıyla, mesaj yazılmış olarak açılır; numarayı rehbere kaydetmeye gerek yok. Metinleri kendi üslubunuzla düzenleyin; ad, saat, tutar gibi alanlar kendiliğinden dolar.</p></article>
+        </div>
+        <figure class="ekran-fig"><div class="fr fr-tel"><div class="scr-kutu"><picture class="scr"><source media="(prefers-color-scheme: dark)" srcset="assets/ekran/odemeler-telefon-390-koyu.webp 390w, assets/ekran/odemeler-telefon-koyu.webp 780w" sizes="200px"><img src="assets/ekran/odemeler-telefon-390-acik.webp" srcset="assets/ekran/odemeler-telefon-390-acik.webp 390w, assets/ekran/odemeler-telefon-acik.webp 780w" sizes="200px" width="390" height="844" alt="DigiPark Ödemeler ekranı, telefon görünümü" loading="lazy" decoding="async"></picture></div></div><figcaption>Ödemeler ekranı, telefonda</figcaption></figure>
+      </div>
+    </section>
+
+    <!-- 7. BELGELER -->
+    <section class="kat" id="belgeler" aria-labelledby="k-belge">
+      <div class="kat-bas"><span class="ikon ik-sari"><svg class="ic" aria-hidden="true"><use href="#i-award"/></svg></span><div><h2 id="k-belge">Belgeler</h2><p>Dönem sonunda logonuz ve renklerinizle katılım belgesi.</p></div></div>
+      <div class="ozl-izgara">
+        <article class="ozl"><h3>Katılım belgesi</h3><p>Sınıfın öğrencilerine işletmenizin adı, logosu ve renkleriyle belge. Katılım sayısı yoklamadan gelir: "24 dersin 22'sine katıldı".</p></article>
+        <article class="ozl"><h3>4 şablon</h3><p>Renkli, Klasik, Modern ve Sade (yazıcı dostu). Varsayılanı seçin, belgede tek dokunuşla değiştirin.</p></article>
+        <article class="ozl"><h3>Öğretmenin değerlendirmesi</h3><p>Hazır cümlelerden seçin (takım çalışması, özgüven, dikkat ve odaklanma…); metin kendiliğinden yazılır, isterseniz düzenleyin.</p></article>
+        <article class="ozl"><h3>Toplu belge ve paylaşım</h3><p>Bütün sınıfa toplu belge hazırlayın. WhatsApp'ta paylaşın, görsel ya da PDF olarak kaydedin, yazdırın.</p></article>
+        <article class="ozl"><h3>Her sınıfa uygun dil</h3><p>Yetişkin sınıflarında belge metni yetişkine göre, ebeveyn + çocuk sınıfında ikisine birlikte yazılır.</p></article>
+        <article class="ozl"><h3>Numara ve imza</h3><p>Her belgenin kendi numarası vardır (ör. DP-2026-A042); isteğe bağlı öğretmen ya da yönetici imzası eklenir.</p></article>
+        <article class="ozl"><h3>Belgeler ekranı</h3><p>Belge verilebilen sınıflar ve verilen belgeler tek ekranda.</p></article>
+        <article class="ozl"><h3>İşletme bilgileri ve logo</h3><p>Logo belgelerde ve raporların başında görünür; Excel çıktılarının başına işletme adı, adres ve telefon yazılır.</p></article>
+      </div>
+      <ul class="galeri" aria-label="Katılım belgesi şablonları">
+        <li><figure><button type="button" data-buyuk="img/belge/renkli.webp" data-ad="Renkli şablon"><img src="img/belge/renkli-k.webp" width="480" height="340" alt="Renkli şablonla örnek katılım belgesi" loading="lazy" decoding="async"><span class="sr">, büyük görünümü aç</span></button><figcaption>Renkli<span>Neşeli, çocuk dostu</span></figcaption></figure></li>
+        <li><figure><button type="button" data-buyuk="img/belge/klasik.webp" data-ad="Klasik şablon"><img src="img/belge/klasik-k.webp" width="480" height="340" alt="Klasik şablonla örnek katılım belgesi" loading="lazy" decoding="async"><span class="sr">, büyük görünümü aç</span></button><figcaption>Klasik<span>Resmî, çerçeveli</span></figcaption></figure></li>
+        <li><figure><button type="button" data-buyuk="img/belge/modern.webp" data-ad="Modern şablon"><img src="img/belge/modern-k.webp" width="480" height="340" alt="Modern şablonla örnek katılım belgesi" loading="lazy" decoding="async"><span class="sr">, büyük görünümü aç</span></button><figcaption>Modern<span>Yan panelli, sade</span></figcaption></figure></li>
+        <li><figure><button type="button" data-buyuk="img/belge/sade.webp" data-ad="Sade şablon"><img src="img/belge/sade-k.webp" width="480" height="340" alt="Sade şablonla örnek katılım belgesi" loading="lazy" decoding="async"><span class="sr">, büyük görünümü aç</span></button><figcaption>Sade<span>Yazıcı dostu, az mürekkep</span></figcaption></figure></li>
+      </ul>
+      <p class="galeri-not">Gerçek uygulama çıktısı, örnek veriyle; belgedeki işletme ve kişi adları uydurmadır. Büyütmek için görsele dokunun.</p>
+    </section>
+
+    <!-- 8. RAPORLAR -->
+    <section class="kat" id="raporlar" aria-labelledby="k-rapor">
+      <div class="kat-bas"><span class="ikon ik-mavi"><svg class="ic" aria-hidden="true"><use href="#i-chart-column"/></svg></span><div><h2 id="k-rapor">Raporlar</h2><p>Her rapor ayrı bölümde, hepsi aynı tarih aralığıyla.</p></div></div>
+      <div class="kat-ic gorselli">
+        <div class="ozl-izgara">
+          <article class="ozl"><h3>Ortak tarih seçici</h3><p>Bugün, Dün, Bu Hafta, Bu Ay ya da Özel Aralık; bütün bölümler aynı anda güncellenir. Son açtığınız bölüm hatırlanır.</p></article>
+          <article class="ozl"><h3>Ciro ve kasa</h3><p>Park, kafe, rezervasyon, üyelik ve sınıf geliri; nakit ve kart ayrı ayrı; indirimler, iadeler ve genel toplam.</p></article>
+          <article class="ozl"><h3>Gün sonu</h3><p>Günün özeti anlaşılır cümlelerle: geçen haftanın aynı gününe göre değişim, en yoğun saat, gelirler, azalan stoklar, gecikmiş ödemeler, yarınki rezervasyonlar ve yaklaşan doğum günleri. "Rapor Numarası"na WhatsApp'tan gönderin.</p></article>
+          <article class="ozl"><h3>Kafe ve stok</h3><p>En çok ve en az satan ürünler, hiç satılmayanlar, kalan, azalan ve tükenen stok.</p></article>
+          <article class="ozl"><h3>Sınıflar</h3><p>Öğrenci bazında yoklama ve devam oranı, ödeme durumu, geciken ödemeler, sınıf doluluğu ve yaş grubuna göre gelir.</p></article>
+          <article class="ozl"><h3>Üyelikler ve rezervasyonlar</h3><p>Aktif üyelikler, kalan bakiyeler ve yeni satışlar; aralıktaki rezervasyonlar, tahsil edilen ve kalan tutarlar, iptal ve iadeler.</p></article>
+          <article class="ozl"><h3>Excel'e aktarma</h3><p>Her bölümün kendi düğmesi var; "Tümünü Excel'e Aktar" her bölümü ayrı sayfaya yazan tek dosya üretir.</p></article>
+          <article class="ozl"><h3>Yalnız patron görür</h3><p>Çalışan girişinde Raporlar bölümü görünmez.</p></article>
+        </div>
+        <figure class="ekran-fig"><div class="fr fr-tel"><div class="scr-kutu"><picture class="scr"><source media="(prefers-color-scheme: dark)" srcset="assets/ekran/raporlar-telefon-390-koyu.webp 390w, assets/ekran/raporlar-telefon-koyu.webp 780w" sizes="200px"><img src="assets/ekran/raporlar-telefon-390-acik.webp" srcset="assets/ekran/raporlar-telefon-390-acik.webp 390w, assets/ekran/raporlar-telefon-acik.webp 780w" sizes="200px" width="390" height="844" alt="DigiPark Raporlar, telefon görünümü" loading="lazy" decoding="async"></picture></div></div><figcaption>Raporlar, telefonda</figcaption></figure>
+      </div>
+    </section>
+
+    <!-- 9. CİHAZLAR VE YEDEK -->
+    <section class="kat" id="cihazlar-yedek" aria-labelledby="k-cihaz">
+      <div class="kat-bas"><span class="ikon ik-teal"><svg class="ic" aria-hidden="true"><use href="#i-cloud"/></svg></span><div><h2 id="k-cihaz">Cihazlar ve yedek</h2><p>Bilgisayarda, tablette, telefonda aynı güncel veri.</p></div></div>
+      <div class="ozl-izgara">
+        <article class="ozl"><h3>Her cihazda</h3><p>Windows ve Mac'te masaüstü uygulaması, Android tablet ve telefonda uygulama. Tabletten başlayın, istediğiniz zaman bilgisayar ekleyin.</p></article>
+        <article class="ozl"><h3>Google Drive eşitleme</h3><p>Cihazlar aynı Google hesabıyla bağlanır, değişiklikler kendiliğinden eşitlenir; beklemek istemezseniz "Şimdi Eşitle". Verileriniz kendi Google Drive'ınızda durur.</p></article>
+        <article class="ozl"><h3>Kayıtlar birleşir</h3><p>İki cihazda ayrı ayrı girilen kayıtların ikisi de kalır, biri ötekinin üzerine yazılmaz. Google'a bağlanmadan girilen kayıtlar da bağlanınca birleşir.</p></article>
+        <article class="ozl"><h3>Eşitleme öncesi güvenlik yedeği</h3><p>Cihazdaki ve buluttaki veri birleştirilmeden önce ikisinin de yedeği kendiliğinden alınır.</p></article>
+        <article class="ozl"><h3>Günlük otomatik yedek</h3><p>Her gün ilk açılışta yedek alınır; istediğinizde "Şimdi Yedek Al". Bir sorun olursa "Yedekten Geri Yükle" ile her şey geri gelir.</p></article>
+        <article class="ozl"><h3>Excel'den içe aktarma</h3><p>Üyelikler, sınıf öğrencileri, gelecek rezervasyonlar, veli/çocuk rehberi ve ürünler. Sütunlar kendiliğinden tanınır, hatalı satırlar önizlemede işaretlenir, aktarım tek tıkla geri alınır; her tür için örnek şablon.</p></article>
+        <article class="ozl"><h3>Lisans ve modüller</h3><p>Yalnız patron görür: lisans bitiş tarihi, kalan gün, "Şimdi kontrol et" ve modüllerin durumu. Lisans kaydı şifreli tutulur, her cihaz yalnız kendi lisansını görür.</p></article>
+      </div>
+    </section>
+
+    <!-- 10. AYARLAR -->
+    <section class="kat" id="ayarlar" aria-labelledby="k-ayar">
+      <div class="kat-bas"><span class="ikon ik-mavi"><svg class="ic" aria-hidden="true"><use href="#i-settings"/></svg></span><div><h2 id="k-ayar">Ayarlar</h2><p>Konulara ayrılmış 7 bölüm; son açtığınız bölüm hatırlanır.</p></div></div>
+      <div class="ayar-izgara">
+        <article class="ayar"><h3><svg class="ic" aria-hidden="true"><use href="#i-building-2"/></svg>İşletme</h3><ul>
+          <li><b>İşletme Bilgileri</b>Ad, telefon, adres, logo, isteğe bağlı imza görseli, belgenin iki rengi, varsayılan belge şablonu, fişte logo.</li>
+          <li><b>İşletme türü</b>Oyun parkı, Atölye ve sınıf ya da İkisi birden; menü ve ana ekran buna göre.</li>
+          <li><b>Onam Formu Kuralları</b>Park kurallarınız, her satır ayrı kural.</li>
+        </ul></article>
+        <article class="ayar"><h3><svg class="ic" aria-hidden="true"><use href="#i-banknote"/></svg>Ücretler ve kapasite</h3><ul>
+          <li><b>Park Ücret Ayarları</b>Saatlik, yarım saatlik ve sabit giriş ücreti, en çok kaç çocuk, fiş altı bilgisi.</li>
+          <li><b>Dakika Bazlı Fiyat Tablosu</b>5 dakikadan 60 dakikaya kadar her kademe için ücret.</li>
+          <li><b>İndirim ve Kampanya Kodları</b>Girişte uygulanan kodlar.</li>
+          <li><b>Üyelik Paketleri</b>Saat bazlı ön ödemeli paketler.</li>
+          <li><b>Rezervasyon Paketleri</b>Doğum günü, etkinlik gibi hazır paketler.</li>
+          <li><b>Alan / Oda Yönetimi</b>Ayrı rezerve edilen alanlar.</li>
+          <li><b>Menü Yönetimi</b>Kafe ürünleri ve fiyatları.</li>
+        </ul></article>
+        <article class="ayar"><h3><svg class="ic" aria-hidden="true"><use href="#i-users"/></svg>Çalışanlar ve yetkiler</h3><ul>
+          <li><b>Personel ve Yetki</b>Patron şifresi; çalışanlar adıyla ve kendi şifresiyle girer, yaptığı işlemler adıyla kaydedilir. Çalışanın görmeyeceği bölümleri seçin; Raporlar çalışana hiç görünmez.</li>
+        </ul></article>
+        <article class="ayar"><h3><svg class="ic" aria-hidden="true"><use href="#i-palette"/></svg>Görünüm ve bildirimler</h3><ul>
+          <li><b>Görünüm</b>Açık, Koyu ya da Otomatik.</li>
+          <li><b>Hatırlatmalar</b>Her hatırlatmayı ayrı açıp kapatın, dakikaları ve özet saatini belirleyin.</li>
+          <li><b>Veli Mesajları</b>Giriş, süre doluyor, ödeme hatırlatması, derse katıldı, rezervasyon hatırlatması, doğum günü teklifi, makbuz ve belge mesajları; tek dokunuşla varsayılan metne dönülür.</li>
+        </ul></article>
+        <article class="ayar"><h3><svg class="ic" aria-hidden="true"><use href="#i-printer"/></svg>Yazıcı ve cihazlar</h3><ul>
+          <li><b>Yazıcı ve Fiş Testi</b>Gerçek müşteriye fiş kesmeden önce test fişi.</li>
+        </ul></article>
+        <article class="ayar"><h3><svg class="ic" aria-hidden="true"><use href="#i-cloud"/></svg>Yedek ve eşitleme</h3><ul>
+          <li><b>Google Drive Senkron</b>Otomatik iki yönlü eşitleme.</li>
+          <li><b>Otomatik Yedekleme</b>Şimdi Yedek Al, Yedekten Geri Yükle.</li>
+          <li><b>Excel'den İçe Aktar</b>Eski listelerinizi taşıyın.</li>
+        </ul></article>
+        <article class="ayar"><h3><svg class="ic" aria-hidden="true"><use href="#i-key-round"/></svg>Lisans ve modüller</h3><ul>
+          <li><b>Lisans ve Modüller</b>Lisans süresi ve modüllerin durumu.</li>
+          <li><b>Puan Kulübü</b>Modül açıkken puan kuralları, hediyeler ve yetkiler.</li>
+        </ul></article>
+      </div>
+    </section>
+
+    <!-- 11. EK HİZMETLER -->
+    <section class="kat" id="ek-hizmetler" aria-labelledby="k-ek">
+      <div class="kat-bas"><span class="ikon ik-sari"><svg class="ic" aria-hidden="true"><use href="#i-sparkles"/></svg></span><div><h2 id="k-ek">Ek hizmetler</h2><p>Yukarıdaki bütün özellikler DigiPark'a dahildir. Puan Kulübü ve AI Asistan ayrı ek hizmetlerdir.</p></div></div>
+      <article class="ek-kart" aria-labelledby="puan-b">
+        <h3 id="puan-b"><svg class="ic" aria-hidden="true"><use href="#i-star"/></svg>Puan Kulübü <span class="rozet r-ek">Ek hizmet</span></h3>
+        <h4>Çocuklar geldikçe puan toplasın, hediyesini alıp mutlu ayrılsın</h4>
+        <p>Her çocuğa QR'lı bir kart verin. Derse geldikçe, kafede harcadıkça ve güzel davranışlarıyla puan toplasın; puanlarını sizin seçtiğiniz hediyelerle değiştirsin. Yoklama ve kafe hesabıyla kendiliğinden çalışır.</p>
+        <ul class="liste">
+          <li><svg class="ic" aria-hidden="true"><use href="#i-credit-card"/></svg><span><b>Kişisel bilgi taşımayan kart.</b> Kartta yalnız bir kod var, isterseniz çocuğun ilk adı. Kartvizit ya da anahtarlık boyunda basın.</span></li>
+          <li><svg class="ic" aria-hidden="true"><use href="#i-scan-line"/></svg><span><b>Saniyede okutun.</b> Android telefon ve tablette kamerayla, bilgisayarda USB/Bluetooth QR okuyucuyla; ya da kart kodunu yazarak. Okuyucu alırken "2D / QR okur" yazan modeli seçin.</span></li>
+          <li><svg class="ic" aria-hidden="true"><use href="#i-circle-check"/></svg><span><b>Puan kendiliğinden gelir.</b> Derse katılım, devam serisi, yeni kayıt, kafe harcaması ve doğum günü puanı otomatik. Kampanya günlerinde puan iki kat.</span></li>
+          <li><svg class="ic" aria-hidden="true"><use href="#i-gift"/></svg><span><b>Hediye kataloğu.</b> Hediyeleri ve stoğu siz belirleyin. Hak kazananlar listelenir; doğum günü yaklaşan çocuk için sürpriz önerisi gelir.</span></li>
+          <li><svg class="ic" aria-hidden="true"><use href="#i-message-circle"/></svg><span><b>Veliler haberdar.</b> Her puanda ya da haftada bir, WhatsApp'tan hazır mesaj.</span></li>
+          <li><svg class="ic" aria-hidden="true"><use href="#i-users"/></svg><span><b>Çalışanlarınız kendi şifresiyle.</b> Kim puan verir, kim hediye teslim eder siz seçin; her işlem kimin yaptığıyla kaydedilir.</span></li>
+          <li><svg class="ic" aria-hidden="true"><use href="#i-repeat"/></svg><span><b>Kayıp kart dert değil.</b> Yeni kart verin, eskisi okutulursa uyarı çıkar. Yıl sonunda puanlar yenilenir, geçmiş kaybolmaz.</span></li>
+        </ul>
+        <p class="not">Denemeyi bitirseniz ya da kapatsanız da puanlar ve geçmiş silinmez.</p>
+        <div class="btns">
+          <a class="btn btn-p" href="https://wa.me/905075383119?text=Merhaba%2C%20DigiPark%20Puan%20Kul%C3%BCb%C3%BC%20%C3%BCcretsiz%20deneme%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum." target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-gift"/></svg>Ücretsiz deneyin, WhatsApp'tan yazın</a>
+          <a class="btn btn-s" data-demo="tur" href="demo/?tur=ikisi"><svg class="ic" aria-hidden="true"><use href="#i-monitor"/></svg>Demoda görün</a>
+        </div>
+        <div class="digipuan">
+          <svg class="ic" aria-hidden="true"><use href="#i-store"/></svg>
+          <p style="margin:0"><b>Kafe, kuaför gibi işletmeler için tek başına: DigiPuan.</b> Oyun parkı bölümleri olmadan, yalnız Puan Kulübü. Bilgi için <a href="https://wa.me/905075383119?text=Merhaba%2C%20DigiPuan%20(Puan%20Kul%C3%BCb%C3%BC)%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum." target="_blank" rel="noopener">WhatsApp'tan yazın</a>.</p>
+        </div>
+      </article>
+      <article class="ek-kart" aria-labelledby="ai-b">
+        <h3 id="ai-b"><svg class="ic" aria-hidden="true"><use href="#i-sparkles"/></svg>AI Asistan <span class="rozet r-yakinda">Yakında</span></h3>
+        <p>Velilerin sık sorduğu soruları işletmeniz adına 7/24 yanıtlayan asistan. Hazır olduğunda haber vereceğiz. <span class="not">Ek hizmettir.</span></p>
+        <span class="not" id="ai-cip-l">Velilerin soracağı sorulara örnek:</span>
+        <ul class="cipler" aria-labelledby="ai-cip-l"><li>Fiyatlarınız nedir?</li><li>Hafta sonu kaçta açıksınız?</li><li>Doğum günü yapıyor musunuz?</li></ul>
+      </article>
+      <p class="geri-don"><a class="btn btn-s" href="index.html" data-ana><svg class="ic" aria-hidden="true"><use href="#i-chevron-left"/></svg>Ana sayfaya dön</a></p>
+    </section>
+  </div>
+</div>
+
+<!-- SON ÇAĞRI -->
+<section class="bolum kapanis" id="son-cagri" aria-labelledby="son-b">
+  <div class="wrap">
+    <h2 id="son-b">DigiPark'ı işletmenizde görelim mi?</h2>
+    <p>Kısa bir tanıtımla işletmenize nasıl uyduğunu birlikte görelim.</p>
+    <div class="btns">
+      <a class="btn btn-p" data-wa="tur" href="https://wa.me/905075383119?text=Merhaba%2C%20hem%20oyun%20park%C4%B1%20hem%20at%C3%B6lye%20i%C5%9Fletiyorum%3B%20DigiPark'%C4%B1%20tan%C4%B1mak%20istiyorum.%20Uygun%20bir%20zamanda%20k%C4%B1sa%20bir%20tan%C4%B1t%C4%B1m%20yapabilir%20misiniz%3F" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-message-circle"/></svg>Size tanıtalım</a>
+      <a class="btn btn-s" data-demo="tur" href="demo/?tur=ikisi"><svg class="ic" aria-hidden="true"><use href="#i-monitor"/></svg>Demoyu hemen dene</a>
+    </div>
+    <p class="deneme"><svg class="ic" aria-hidden="true"><use href="#i-gift"/></svg>10 gün ücretsiz deneme · Bütün özellikler dahil (Puan Kulübü ve AI Asistan hariç)</p>
+  </div>
+</section>
+</main>
+
+<footer class="alt-bilgi">
+  <div class="wrap">
+    <div>
+      <p><b>DigitaraLab</b> · DigiPark</p>
+      <p>WhatsApp: 0507 538 31 19 · <a href="mailto:digitaralab85@gmail.com">digitaralab85@gmail.com</a></p>
+      <p>Simgeler: Lucide · Yazı tipleri: Fredoka, Albert Sans (OFL)</p>
+    </div>
+    <div><a href="index.html" data-ana><svg class="ic" aria-hidden="true" style="margin-right:6px"><use href="#i-chevron-left"/></svg>Ana sayfa</a></div>
+  </div>
+</footer>
+
+<div class="mcubuk" id="mcubuk">
+  <a class="btn btn-p" data-wa="tur" href="https://wa.me/905075383119?text=Merhaba%2C%20hem%20oyun%20park%C4%B1%20hem%20at%C3%B6lye%20i%C5%9Fletiyorum%3B%20DigiPark'%C4%B1%20tan%C4%B1mak%20istiyorum.%20Uygun%20bir%20zamanda%20k%C4%B1sa%20bir%20tan%C4%B1t%C4%B1m%20yapabilir%20misiniz%3F" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-message-circle"/></svg>Size tanıtalım</a>
+</div>
+
+<dialog class="buyuk" id="buyuk" aria-labelledby="buyuk-b">
+  <div class="buyuk-ust"><h2 id="buyuk-b">Şablon</h2><button type="button" class="ikon-btn" id="buyuk-kapat" aria-label="Kapat" title="Kapat"><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg></button></div>
+  <div class="buyuk-gov"><img id="buyuk-img" src="data:," alt="" width="1280" height="905"></div>
+</dialog>
+
+<script>
+(function(){
+  'use strict';
+  var d=document.documentElement, WA='905075383119';
+  var MSG={
+    park:"Merhaba, oyun parkım için DigiPark'ı tanımak istiyorum. Uygun bir zamanda kısa bir tanıtım yapabilir misiniz?",
+    atolye:"Merhaba, atölye / kurs işletmem için DigiPark'ı tanımak istiyorum. Uygun bir zamanda kısa bir tanıtım yapabilir misiniz?",
+    ikisi:"Merhaba, hem oyun parkı hem atölye işletiyorum; DigiPark'ı tanımak istiyorum. Uygun bir zamanda kısa bir tanıtım yapabilir misiniz?"
+  };
+  function $$(s,r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); }
+  function ls(k,v){ try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v); }catch(e){ return null; } }
+
+  // ── İşletme türü (adres > son seçim > İkisi birden): "Size tanıtalım" mesajı, demo adresi, ana sayfaya dönüş bağlantıları
+  var t=(d.className.match(/\btur-(\w+)/)||[])[1]||'ikisi';
+  $$('[data-wa="tur"]').forEach(function(a){ a.href='https://wa.me/'+WA+'?text='+encodeURIComponent(MSG[t]); });
+  $$('[data-demo="tur"]').forEach(function(a){ a.href='demo/?tur='+t; });
+  $$('a[data-ana]').forEach(function(a){ var h=a.getAttribute('href'), i=h.indexOf('#'); a.href='index.html?tur='+t+(i>-1?h.slice(i):''); });
+
+  // ── Tema: kayıtlı seçim yoksa sistem. Ekranlar (<picture> kaynağı) site temasını izler.
+  var mq=window.matchMedia?window.matchMedia('(prefers-color-scheme: dark)'):null;
+  function etkin(){ var a=d.getAttribute('data-theme'); return a||(mq&&mq.matches?'dark':'light'); }
+  function ekranTema(){
+    var a=d.getAttribute('data-theme');
+    $$('picture.scr source').forEach(function(s){ s.media=a?(a==='dark'?'all':'not all'):'(prefers-color-scheme: dark)'; });
+  }
+  var temaBtn=document.getElementById('tema');
+  function temaYaz(){ d.setAttribute('data-tema-etkin', etkin()); temaBtn.setAttribute('aria-pressed', String(etkin()==='dark')); }
+  temaBtn.addEventListener('click', function(){ var y=etkin()==='dark'?'light':'dark'; d.setAttribute('data-theme', y); ls('dpSiteTema', y); ekranTema(); temaYaz(); });
+  if(mq){ var dinle=function(){ if(!d.getAttribute('data-theme')) temaYaz(); }; if(mq.addEventListener) mq.addEventListener('change', dinle); else if(mq.addListener) mq.addListener(dinle); }
+  ekranTema(); temaYaz();
+
+  // ── Telefon menüsü
+  var mb=document.getElementById('menu-btn');
+  function menu(ac){ d.classList.toggle('menu-acik', ac); mb.setAttribute('aria-expanded', String(ac)); }
+  mb.addEventListener('click', function(){ menu(mb.getAttribute('aria-expanded')!=='true'); });
+  $$('#ust-nav a').forEach(function(a){ a.addEventListener('click', function(){ menu(false); }); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape' && mb.getAttribute('aria-expanded')==='true'){ menu(false); mb.focus(); } });
+
+  // ── İçindekiler: görünen bölüm işaretlenir; telefonda çip şeridi yatayda o çipe kayar (sayfa dikeyde kaymaz)
+  var bag=$$('#icindekiler a'), serit=document.querySelector('#icindekiler ul');
+  function isaretle(id){
+    bag.forEach(function(a){
+      var on=a.getAttribute('href')==='#'+id;
+      if(on){ a.setAttribute('aria-current','true');
+        if(serit.scrollWidth>serit.clientWidth){ var li=a.parentNode; serit.scrollLeft=li.offsetLeft-(serit.clientWidth-li.offsetWidth)/2; } }
+      else a.removeAttribute('aria-current');
+    });
+  }
+  if('IntersectionObserver' in window){
+    var gorunen={};
+    var io=new IntersectionObserver(function(g){
+      g.forEach(function(x){ gorunen[x.target.id]=x.isIntersecting; });
+      for(var i=0;i<bag.length;i++){ var id=bag[i].getAttribute('href').slice(1); if(gorunen[id]){ isaretle(id); break; } }
+    }, {rootMargin:'-30% 0px -60% 0px'});
+    $$('.kat').forEach(function(s){ io.observe(s); });
+  }
+
+  // ── Belge galerisi: büyük görünüm (<dialog>; yoksa yedek pencere). Esc ve Kapat kapatır, odak düğmeye döner.
+  var dlg=document.getElementById('buyuk'), dImg=document.getElementById('buyuk-img'), dBas=document.getElementById('buyuk-b'), kapat=document.getElementById('buyuk-kapat'), donus=null;
+  var yerel=typeof dlg.showModal==='function';
+  function ac(b){
+    donus=b; dImg.src=b.getAttribute('data-buyuk'); dImg.alt=b.querySelector('img').alt; dBas.textContent=b.getAttribute('data-ad');
+    if(yerel) dlg.showModal(); else { dlg.classList.add('yedek'); dlg.setAttribute('open',''); }
+    kapat.focus();
+  }
+  function kapa(){
+    if(yerel){ if(dlg.open) dlg.close(); } else { dlg.removeAttribute('open'); dlg.classList.remove('yedek'); }
+    if(donus){ donus.focus(); donus=null; }
+  }
+  $$('.galeri button').forEach(function(b){ b.addEventListener('click', function(){ ac(b); }); });
+  kapat.addEventListener('click', kapa);
+  dlg.addEventListener('cancel', function(e){ e.preventDefault(); kapa(); });
+  dlg.addEventListener('click', function(e){ if(e.target===dlg) kapa(); });
+  dlg.addEventListener('keydown', function(e){
+    if(e.key==='Escape'){ e.preventDefault(); kapa(); }
+    else if(e.key==='Tab'){ e.preventDefault(); kapat.focus(); } // pencerede tek odaklanabilir öğe
+  });
+
+  // ── Telefonda alttaki "Size tanıtalım" çubuğu: son çağrı görünürken gizlenir (IntersectionObserver yoksa sabit kalır)
+  var cubuk=document.getElementById('mcubuk'), son=document.getElementById('son-cagri');
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(g){ var v=g[0].isIntersecting; cubuk.classList.toggle('gizli', v); cubuk.setAttribute('aria-hidden', String(v));
+      $$('a', cubuk).forEach(function(a){ a.tabIndex=v?-1:0; }); }, {threshold:0}).observe(son);
+  }
+})();
+</script>
+</body>
+</html>
